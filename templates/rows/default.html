@@ -1,0 +1,71 @@
+<tr class="data-table__row {{ view.row_class(row) }}" data-id="{{ row.id }}">
+    <td>
+        {% if model.details_view and has_details_view_access %}
+            <a href="{{ model.url_prefix }}{{ model.name }}/{{ row[model.id_field] }}/details/"
+               title="{{ model.details_view.title }}"><i class="icon-eye-view"></i></a>
+        {% endif %}
+        {% if model.edit_view and has_edit_view_access %}
+            <a href="{{ model.url_prefix }}{{ model.name }}/{{ row[model.id_field] }}/edit/"
+               title="{{ model.edit_view.title }}"><i class="icon-edit"></i></a>
+        {% endif %}
+    </td>
+    {% for column_name, column_options in view.fields_obj if column_name in view.display %}
+        <td>
+            {% if row[column_name] is not none %}
+                {% set meta = column_options.meta %}
+                {% set widget = column_options.widget %}
+                {{ widget.render_list(row) | safe }}
+                <span style="position: absolute;">
+                    {% if meta.foreign_keys %}
+                        {% for fk in meta.foreign_keys %}
+                            {% set model = app.models_map["%s_%s" % (model.db.__name__, fk.column.table.name)] %}
+                            {% if model.details_view %}
+                                <a href="{{ model.url_prefix }}{{ model.name }}/{{ row[column_name] }}/details/"
+                                   class="field-action"><i class="icon-arrow-right"></i></a>
+                            {% elif model.edit_view %}
+                                <a href="{{ model.url_prefix }}{{ model.name }}/{{ row[column_name] }}/edit/"
+                                   class="field-action"><i class="icon-arrow-right"></i></a>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    {% if column_options.filterable %}
+                        <a href="{{ magic_params(request, 'filters', '%s=\'%s\'' % (column_name, row[column_name])) }}"
+                           class="field-action field-action_hidden"><i class="icon-filter"></i></a>
+                    {% endif %}
+                </span>
+            {% else %}
+                <small>NULL</small>
+            {% endif %}
+        </td>
+    {% endfor %}
+    {% if view.object_actions %}
+        <td style="line-height: 1.7em;">
+            <span class="data-row__actions">
+                {% for action in view.object_actions_obj %}
+                    {% if action.stay_on_page %}
+                        <a href="{{ model.url_prefix }}{{ model.name }}/{{ row[model.id_field] }}/{{ action.name }}/"
+                           style="{{ action.style }}" onclick="removeRow(event, '
+                                {{ model.url_prefix }}{{ model.name }}/{{ row[model.id_field] }}/{{ action.name }}/')">[{{ action.title }}]</a>
+                        <br>
+                    {% else %}
+                        <a href="{{ model.url_prefix }}{{ model.name }}/{{ row[model.id_field] }}/{{ action.name }}/"
+                           style="{{ action.style }}">[{{ action.title }}]</a><br>
+                    {% endif %}
+                {% endfor %}
+            </span>
+        </td>
+    {% endif %}
+
+    {% set show_delete = model.delete_view and has_delete_view_access and view.has_list_delete %}
+
+    {% if show_delete %}
+        <td style="text-align: right;">
+            {% if show_delete %}
+                <a href="{{ model.url_prefix }}{{ model.name }}/{{ row[model.id_field] }}/delete/"
+                   title="{{ model.delete_view.title }}" onclick="removeRow(event, '
+                        {{ model.url_prefix }}{{ model.name }}/{{ row[model.id_field] }}/delete/')"><i
+                        class="icon-remove-sign"></i></a>
+            {% endif %}
+        </td>
+    {% endif %}
+</tr>

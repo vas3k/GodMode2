@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>{{ settings.APP_TITLE or "GodMode 2" }}</title>
+
+    <link href='//fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,400italic&subset=cyrillic,latin'
+          rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="/static/css/normalize.min.css">
+    <link rel="stylesheet" href="/static/css/whhg.css">
+    <link rel="stylesheet" href="/static/css/colors.css">
+    <link rel="stylesheet" href="/static/css/styles.css?v=1">
+    <link rel="stylesheet" href="/static/css/custom.css?v=4">
+
+    <script type="text/javascript" src="/static/js/vendor/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript" src="/static/js/main.js"></script>
+</head>
+<body class="bg-lightest">
+<div class="main">
+    <div class="navbar bg-dark">
+        <a href="/" class="navbar-logo bg-darker">{{ settings.APP_LOGO | safe }}</a>
+        <div class="navbar-buttons">
+            {% for model in app.models %}
+                {% if model.place == "navbar" and ACL.has_access(me, model) %}
+                    <a class="navbar-button" href="/models/{{ model.name }}/">{{ model.title }}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="navbar-user">
+            <div class="navbar-user__item">
+                <i class="icon-useralt"></i>&nbsp;{{ me.login }}&nbsp;[{{ me.acl }}]
+            </div>
+            <div class="navbar-user__dropdown">
+                <a href="/logout/" class="navbar-user__dropdown-item">Logout</a>
+            </div>
+        </div>
+    </div>
+    {% block content %}
+        <div class="one-height">
+            <div class="sidebar bg-sidebar one-height__item">
+                {% block sidebar %}
+                    {% for group, models in app.models | group_models %}
+                        {% if not group or ACL.has_access(me, group) %} {# TODO: add policies to groups #}
+                            <div class="sidebar-group">
+                                {% if group and group.name %}
+                                    <div class="sidebar-group__title">{{ group.name }}</div>
+                                {% endif %}
+                                {% for sidebar_model in models %}
+                                    {% if sidebar_model.place == "sidebar" %}
+                                        {% set has_list_view_access = ACL.has_access(me, sidebar_model.list_view_obj) %}
+                                        {% if has_list_view_access %}
+                                            <div class="sidebar-group__items">
+                                                <a href="/models/{{ sidebar_model.name }}/"
+                                                   class="sidebar-item {% if sidebar_model == model %}sidebar-item_active{% endif %}">
+                                                    <i class="{{ sidebar_model.icon }}"></i>&nbsp;{{ sidebar_model.title }}
+                                                </a>
+                                            </div>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endblock %}
+            </div>
+            <div class="content-wrapper one-height__item">
+                {% block body %}
+                {% endblock %}
+            </div>
+        </div>
+    {% endblock %}
+</div>
+</body>
+</html>

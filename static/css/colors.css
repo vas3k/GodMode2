@@ -1,0 +1,19 @@
+.bg-dark {
+    background-color: #3b3f4f;
+    color: #9fa4b7;
+}
+
+.bg-darker {
+    background-color: #2e313d;
+    color: #FFFFFF;
+}
+
+.bg-sidebar {
+    background-color: #30363e;
+    color: #FFF;
+}
+
+.bg-lightest {
+    background-color: #e9e9e9;
+    color: #333;
+}

@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <style>
+        .retention-table {
+            margin: 20px 40px;
+            font-size: 10px;
+            width: auto !important;
+        }
+
+        .retention-table_size_small {
+            width: auto !important;
+            float: left;
+        }
+
+        .retention-table td {
+            padding: 3px 7px;
+            text-align: right;
+            border: solid 1px #999;
+            border-collapse: collapse;
+        }
+
+        .good {
+            background-color: rgba(128, 255, 128, 0.2);
+        }
+
+        .medium {
+            background-color: rgba(255, 255, 128, 0.2);
+        }
+
+        .bad {
+            background-color: rgba(255, 128, 128, 0.2);
+        }
+    </style>
+    <table class="rows retention-table">
+        <tr>
+            <td style="min-width: 100px;">{{ title }}</td>
+            {% for column_name in data.column_dates %}
+                <td><b>{{ column_name }}</b></td>
+            {% endfor %}
+        </tr>
+        {% for row in data.retention %}
+            <tr>
+                <td><b>{{ data.row_dates[loop.index0] }}</b> ({{ data.totals[data.row_dates[loop.index0]] }})</td>
+                {% for field in row %}
+                    {% if field is none %}
+                        <td>&nbsp;</td>
+                    {% else %}
+                        <td class="{% if field >= 0.25 %}good{% elif field >= 0.15 %}medium{% else %}bad{% endif %}">{{ (field * 100.0) | round(1) }}%</td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

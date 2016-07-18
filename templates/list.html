@@ -1,0 +1,117 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    {% set limit = (limit or request.args.limit or view.max_per_page) | int %}
+    {% set offset = (offset or request.args.offset or 0) | int %}
+    {% set filter = (request.args.filters or "") %}
+    {% set order_by = (request.args.order_by or view.default_sorting) %}
+
+    {% set has_create_view_access = ACL.has_access(me, model.create_view_obj) %}
+    {% set has_edit_view_access = ACL.has_access(me, model.edit_view_obj) %}
+    {% set has_details_view_access = ACL.has_access(me, model.details_view_obj) %}
+    {% set has_delete_view_access = ACL.has_access(me, model.delete_view_obj) %}
+    {% set has_soft_delete_view_access = ACL.has_access(me, model.soft_delete_view_obj) %}
+
+    <div class="content-header">
+        <div class="content-header__title">{{ model.title }}</div>
+        {% if model.create_view and has_create_view_access %}
+            <a href="{{ model.url_prefix }}{{ model.name }}/create/" class="content-header__button"><i
+                    class="icon-circleadd"></i>&nbsp;Create</a>
+        {% endif %}
+    </div>
+    <div class="content-actions">
+        <form action="." method="get">
+            <div class="content-actions__action">
+                <label for="action-filter">Filter:</label>
+                <input type="text" name="filters" id="action-filter" value="{{ filters or "" }}">
+            </div>
+            <div class="content-actions__action">
+                <label for="action-limit">Limit:</label>
+                <input type="text" name="limit" id="action-limit" style="width: 40px;" value="{{ limit or "" }}">
+            </div>
+            <div class="content-actions__action">
+                <label for="action-offset">Offset:</label>
+                <input type="text" name="offset" id="action-offset" style="width: 40px;" value="{{ offset or "" }}">
+            </div>
+            <div class="content-actions__action">
+                <label for="action-orderby">Sort:</label>
+                <select name="order_by" id="action-orderby" onchange="this.form.submit()">
+                    {% for column_name in view.sorting %}
+                        <option value="{{ column_name }} asc"
+                                {% if order_by == column_name + " asc" %}selected="selected"{% endif %}>{{ column_name }} &darr;</option>
+                        <option value="{{ column_name }} desc"
+                                {% if order_by == column_name + " desc" %}selected="selected"{% endif %}>{{ column_name }} &uarr;</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="content-actions__action">
+                <input type="submit" value="->" style="width: 1px; height: 1px; position: absolute; left: -9999px;">
+            </div>
+        </form>
+        {% if view.batch_actions %}
+            <div class="content-actions__action content-actions__action_float_right">
+                <select name="action" id="list-actions"
+                        onchange="runListAction(event, '{{ model.url_prefix }}{{ model.name }}')">
+                    <option value="">---</option>
+                    {% for action in view.batch_actions_obj %}
+                        {% if ACL.has_access(me, action) %}
+                            <option value="batch/{{ action.name }}">{{ action.title }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+        {% endif %}
+    </div>
+    <div class="data">
+        <table class="data-table">
+            <thead>
+            <tr>
+                <td>
+                    <input type="checkbox" class="checkall-checkbox">
+                </td>
+                {% for column_name, column_options in view.fields_obj if column_name in view.display %}
+                    {% set meta = column_options.meta %}
+                    {% set widget = column_options.widget %}
+                    <td>
+                        {% if order_by  == meta.name + " desc" %}
+                            <a href="{{ magic_params(request, 'order_by', meta.name + " asc") }}">
+                                {{ widget.pretty_name }}&nbsp;<i class="icon-sortbysizedescending"></i><br>
+                                <small>{{ meta.type }}</small>
+                            </a>
+                        {% elif order_by == meta.name + " asc" %}
+                            <a href="{{ magic_params(request, 'order_by', meta.name + " desc") }}">
+                                {{ widget.pretty_name }}&nbsp;<i class="icon-sortbysizeascending"></i><br>
+                                <small>{{ meta.type }}</small>
+                            </a>
+                        {% else %}
+                            <a href="{{ magic_params(request, 'order_by', meta.name + " desc") }}">
+                                {{ widget.pretty_name }}&nbsp;<br>
+                                <small>{{ meta.type | no_exception("???") }}</small>
+                            </a>
+                        {% endif %}
+                    </td>
+                {% endfor %}
+                {% if view.object_actions %}
+                    <td>&nbsp;</td>
+                {% endif %}
+                {% set show_delete = model.delete_view and has_delete_view_access and view.has_list_delete %}
+                {% set show_soft_delete = model.soft_delete_view and has_soft_delete_view_access and view.has_list_delete %}
+                {% if show_delete or show_soft_delete %}
+                    <td>&nbsp;</td>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in rows %}
+                {% include "rows/default.html" %}
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="paginator">
+            {% if offset != 0 %}
+                <a href="{{ magic_params(request, 'offset', offset - limit) }}" class="paginator-back">&larr;</a>
+            {% endif %}
+            <a href="{{ magic_params(request, 'offset', offset + limit) }}" class="paginator-forward">&rarr;</a>
+        </div>
+    </div>
+{% endblock %}

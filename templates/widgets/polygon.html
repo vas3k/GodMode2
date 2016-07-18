@@ -1,0 +1,76 @@
+<style>
+    .polygon-map {
+        width: 600px;
+        height: 500px;
+    }
+
+    .polygon-map-results {
+        height: 100px !important;
+        width: 590px !important;
+        margin-left: 170px;
+    }
+</style>
+<div class="polygon-map" id="polygon-map-{{ name }}"></div>
+<textarea name="{{ name }}" class="polygon-map-results" id="polygon-map-{{ name }}-results">{{ value }}</textarea>
+<script src="https://maps.googleapis.com/maps/api/js?v=3&libraries=places"></script>
+<script type="text/javascript">
+    var map;
+    var polygon;
+
+    function initialize() {
+        map = new google.maps.Map(document.getElementById('polygon-map-{{ name }}'), {
+            zoom: 8,
+            mapTypeId: google.maps.MapTypeId.TERRAIN
+        });
+
+        polygon = new google.maps.Polygon({
+            map: map,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35,
+            draggable: true,
+            geodesic: true,
+            editable: true
+        });
+
+        {% if value %}
+            var coords = [
+                {% for latlon in value[2:-2].split("),(") %}
+                    new google.maps.LatLng({{ latlon }}),
+                {% endfor %}
+            ];
+
+            var bounds = new google.maps.LatLngBounds();
+            for (var i = 0; i < coords.length; i++) {
+                bounds.extend(coords[i]);
+            }
+            map.fitBounds(bounds);
+            polygon.setPath(coords);
+        {% else %}
+            map.setCenter(new google.maps.LatLng(50.2111912, 24.006282));
+            map.setZoom(3);
+            google.maps.event.addListener(map, "click", function (event) {
+                polygon.getPath().push(event.latLng);
+            });
+        {% endif %}
+
+        google.maps.event.addListener(polygon.getPath(), 'insert_at', dumpChanges);
+        google.maps.event.addListener(polygon.getPath(), 'remove_at', dumpChanges);
+        google.maps.event.addListener(polygon.getPath(), 'set_at', dumpChanges);
+        google.maps.event.addListener(polygon, 'dragend', dumpChanges);
+    }
+
+    function dumpChanges(event) {
+        var results = [];
+        var path = polygon.getPath();
+        for (var i = 0; i < path.getLength(); i++) {
+            var xy = path.getAt(i);
+            results.push("(" + xy.lat() + "," + xy.lng() + ")");
+        }
+        $("#polygon-map-{{ name }}-results").val("(" + results.join(",") + ")");
+    }
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+</script>

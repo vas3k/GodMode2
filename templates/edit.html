@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <div class="content-header">
+        <div class="content-header__title"><a href="{{ model.url_prefix }}{{ model.name }}/">{{ model.title }}</a>
+            :: {{ view.title }}</div>
+        {% if model.delete_view and ACL.has_access(me, model.delete_view_obj) %}
+            <a href="../delete/" class="content-header__button" onclick="return confirm('Delete?');"><i
+                    class="icon-remove"></i>&nbsp;{{ model.delete_view.title }}</a>
+        {% endif %}
+        {% if model.soft_delete_view and ACL.has_access(me, model.soft_delete_view_obj) %}
+            <a href="../soft_delete/" class="content-header__button" onclick="return confirm('Soft delete?');"><i
+                    class="icon-remove-circle"></i>&nbsp;{{ model.soft_delete_view.title }}</a>
+        {% endif %}
+    </div>
+    <div class="data">
+        <form method="post" action=".">
+
+            {% for column_name, column_options in view.fields_obj if column_name in view.display %}
+                {% set meta = column_options.meta %}
+                {% set widget = column_options.widget %}
+                <div class="data-row">
+                    <label for="edit-{{ meta.name }}">{{ meta.name }}<br>
+                        <small>{{ meta.type | no_exception("???") }}</small>
+                    </label>
+                    {{ widget.render_edit(item) | safe }}
+                </div>
+            {% endfor %}
+
+            <div class="data-row">
+                <input type="submit" value="Save">
+            </div>
+        </form>
+    </div>
+{% endblock %}

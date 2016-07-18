@@ -1,0 +1,7 @@
+Flask==0.10.1
+Flask-Assets==0.10
+Flask-SQLAlchemy==2.0
+SQLAlchemy==1.0.5
+py-bcrypt==0.4
+Jinja2==2.8
+raven==5.3.1

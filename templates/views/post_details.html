@@ -1,0 +1,21 @@
+{% extends "details.html" %}
+
+{% block details %}
+    <div class="content-header">
+        <div class="content-header__title"><a href="{{ model.url_prefix }}{{ model.name }}/">{{ model.title }}</a> ::
+            Details #{{ post[model.id_field] }}</div>
+        {% if model.edit_view and ACL.has_access(me, model.edit_view_obj) %}
+            <a href="../edit/" class="content-header__button"><i class="icon-edit"></i>&nbsp;{{ model.edit_view.title }}
+            </a>
+        {% endif %}
+        {% if model.delete_view and ACL.has_access(me, model.delete_view_obj) %}
+            <a href="../delete/" class="content-header__button" onclick="return confirm('Delete?');"><i
+                    class="icon-remove"></i>&nbsp;{{ model.delete_view.title }}</a>
+        {% endif %}
+    </div>
+
+    <div class="data details-data">
+        <h1>#{{ post.id }} &laquo;{{ post.title }}&raquo;</h1>
+        <div>{{ post.body | e }}</div>
+    </div>
+{% endblock %}

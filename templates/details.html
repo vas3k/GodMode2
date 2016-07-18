@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    {% block details %}
+        <div class="content-header">
+            <div class="content-header__title"><a href="{{ model.url_prefix }}{{ model.name }}/">{{ model.title }}</a>
+                :: Details #{{ item[model.id_field] }}</div>
+            {% if model.edit_view and ACL.has_access(me, model.edit_view_obj) %}
+                <a href="../edit/" class="content-header__button"><i
+                        class="icon-edit"></i>&nbsp;{{ model.edit_view.title }}</a>
+            {% endif %}
+            {% if model.delete_view and ACL.has_access(me, model.delete_view_obj) %}
+                <a href="../delete/" class="content-header__button" onclick="return confirm('Delete?');"><i
+                        class="icon-remove"></i>&nbsp;{{ model.delete_view.title }}</a>
+            {% endif %}
+        </div>
+        <div class="data details-data">
+            {% for column_name, column_options in view.fields_obj if column_name in view.display %}
+                {% set meta = column_options.meta %}
+                {% set widget = column_options.widget %}
+                <div class="data-row">
+                    <label for="edit-{{ meta.name }}">{{ meta.name }}<br>
+                        <small>{{ meta.type | no_exception("???") }}</small>
+                    </label>
+                    {{ widget.render_details(item) | safe }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endblock %}
+    {% if view.actions %}
+        <div class="details-actions">
+            {% for action in view.actions_obj %}
+                {% if ACL.has_access(me, action) %}
+                    <div class="details-action">
+                        <h3>{{ action.title }}</h3>
+                        {% set id=item_id or None %}
+                        {% set item = item or None %}
+                        {{ action.render_form(id=id, item=item) | safe }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "blank_layout.html" %}
+
+{% block content %}
+    <div class="login">
+        <span class="login__header">GodMode2</span>
+        <form action="." method="post">
+            <input type="hidden" name="redirect" value="{{ redirect }}">
+            <input type="text" name="login" placeholder="Login"><br>
+            <input type="password" name="password" placeholder="Password"><br>
+            <input type="submit" value="Enter">
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <div class="content-header">
+        <div class="content-header__title"><a href="{{ model.url_prefix }}{{ model.name }}/">{{ model.title }}</a>
+            :: {{ view.title }}</div>
+    </div>
+    <div class="data">
+        <form method="post" action=".">
+            {% for column_name, column_options in view.fields_obj if column_name in view.display %}
+                {% set meta = column_options.meta %}
+                {% set widget = column_options.widget %}
+                <div class="data-row">
+                    <label for="edit-{{ meta.name }}">{{ meta.name }}<br>
+                        <small>{{ meta.type | no_exception("???") }}</small>
+                    </label>
+                    {{ widget.render_edit() | safe }}
+                </div>
+            {% endfor %}
+            <div class="data-row">
+                <input type="submit" value="Create">
+            </div>
+        </form>
+    </div>
+{% endblock %}
