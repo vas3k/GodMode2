@@ -1,7 +1,7 @@
 # GodMode 2
 
-GodMode is a semi-automatic customizable admin generator that lets you add admin interface to any SQL database.
-Based on Python 3.x, Flask and SQLAlchemy reflections.
+GodMode is a semi-automatic customizable admin interface generator that lets you add admin interface to any SQL database.
+Written in Python 3.x, Flask and SQLAlchemy reflections.
 
 Automatically creates CRUD pages for any table in your database with ability to customize rows and views, create filters,
 batch actions and manage access policies for users and groups.
@@ -16,7 +16,7 @@ Oracle and Sybase but they were not officially tested.
 
 ![Screenshot](static/screenshot.png?raw=true)
 
-## Usage
+## Installation
 
 **Demo user and password: demo/demo.**
 
@@ -32,6 +32,23 @@ $ python3 app.py
 ```
 
 Then open your browser at [localhost:1488](http://localhost:1488), enter demo/demo to access the main screen.
+
+## Quick Start
+
+UNDER CONSTRUCTION
+
+## Usage
+
+UNDER CONSTRUCTION
+
+## Future Plans
+
+* Buy more beer
+* Fix HTML/CSS bugs
+* Support default values from database
+* Security test for XSS and injections (be careful with that, check all models you create and send me pull requests)
+* Think about better filtering/sorting interface
+* Make an install~~.php~~ file for easier cold start
 
 ## Similar Projects
 
