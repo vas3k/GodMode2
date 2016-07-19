@@ -2,7 +2,7 @@
 
 README IS UNDER CONSTRUCTION
 
-![Screenshot(static/screenshot.png?raw=true)
+![Screenshot](static/screenshot.png?raw=true)
 
 ## Usage
 Install..
