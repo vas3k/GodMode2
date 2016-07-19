@@ -31,7 +31,7 @@ $ sudo pip3 install -r requirements.txt
 $ python3 app.py
 ```
 
-Then open your browser at [localhost:1488](http://localhost:1488), enter demo/demo to access the main screen.
+Then open your browser at [localhost:1488](http://localhost:1488), enter demo/demo to access demo version of the main screen.
 
 ## Quick Start
 
@@ -49,6 +49,7 @@ UNDER CONSTRUCTION
 * Security test for XSS and injections (be careful with that, check all models you create and send me pull requests)
 * Think about better filtering/sorting interface
 * Make an install~~.php~~ file for easier cold start
+* Maybe more AJAX for validation and inline editing
 
 ## Similar Projects
 
@@ -59,7 +60,9 @@ Other great projects for automatic admin interfaces:
 * [Sonata Admin Bundle (PHP)](https://github.com/sonata-project/SonataAdminBundle)
 
 ## License
-vas3k (c) 2016
+vas3k (c) 2016+
+
+Special thanks to [Access Denied](https://github.com/IljaKazakov).
 
 Licensed under the [WTFPL](http://www.wtfpl.net/) license.
 Full text of the license can be found in the LICENSE.txt file.
