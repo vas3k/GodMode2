@@ -8,7 +8,7 @@ from base.model import BaseAdminModel
 from base.widget import BaseWidget
 from common.acl import ACL
 from groups.godmode import GodModeGroup
-from tables.godmode import PoliciesTable, UsersTable, GodModeDatabase
+from db.godmode import PoliciesTable, UsersTable, GodModeDatabase
 from widgets.boolean import BooleanWidget
 
 

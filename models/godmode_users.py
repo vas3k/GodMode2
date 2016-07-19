@@ -10,8 +10,8 @@ from common.acl import ACL
 from common.api import API
 from common.exceptions import ObjectNotFound, AccessDenied, AuthFailed
 from groups.godmode import GodModeGroup
-from tables.godmode import LogTable
-from tables.godmode import SessionsTable, UsersTable, GodModeDatabase
+from db.godmode import LogTable
+from db.godmode import SessionsTable, UsersTable, GodModeDatabase
 from widgets.list import ListWidget
 from widgets.password import PasswordWidget
 

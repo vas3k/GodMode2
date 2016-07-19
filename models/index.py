@@ -4,7 +4,7 @@ from sqlalchemy.exc import DataError
 from base.model import BaseAdminModel
 from base.view import BaseView
 from common.acl import ACL
-from tables.demo import DemoDatabase
+from db.demo import DemoDatabase
 
 
 class IndexAdminModel(BaseAdminModel):

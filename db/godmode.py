@@ -6,7 +6,7 @@ from base.db import BaseDatabase
 
 
 class GodModeDatabase(BaseDatabase):
-    dsn = "sqlite:///db/godmode.sqlite"
+    dsn = "sqlite:///internal/godmode.sqlite"
 
 
 GodModeDatabase.bind()

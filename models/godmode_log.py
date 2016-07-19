@@ -5,7 +5,7 @@ from base.model import BaseAdminModel
 from base.widget import BaseWidget
 from common.acl import ACL
 from groups.godmode import GodModeGroup
-from tables.godmode import LogTable, GodModeDatabase
+from db.godmode import LogTable, GodModeDatabase
 
 
 class IdsWidget(BaseWidget):

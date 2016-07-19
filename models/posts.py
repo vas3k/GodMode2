@@ -6,7 +6,7 @@ from base.list_view import BaseListView
 from base.model import BaseAdminModel
 from common.acl import ACL
 from groups.demo import DemoGroup
-from tables.demo import Post, DemoDatabase
+from db.demo import Post, DemoDatabase
 from widgets.longtext import LongTextWidget
 
 

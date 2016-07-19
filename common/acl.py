@@ -1,6 +1,6 @@
 from flask import g
 
-from tables.godmode import PoliciesTable, GodModeDatabase
+from db.godmode import PoliciesTable, GodModeDatabase
 
 
 class ACL(object):

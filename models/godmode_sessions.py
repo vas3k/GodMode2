@@ -4,7 +4,7 @@ from base.list_view import BaseListView
 from base.model import BaseAdminModel
 from common.acl import ACL
 from groups.godmode import GodModeGroup
-from tables.godmode import SessionsTable, GodModeDatabase
+from db.godmode import SessionsTable, GodModeDatabase
 
 
 class GodModeSessionsAdminModel(BaseAdminModel):

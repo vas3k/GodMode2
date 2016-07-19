@@ -8,6 +8,8 @@ import settings
 
 class BaseDatabase:
     dsn = None
+    TableBase = None
+    metadata = None
 
     @classmethod
     def bind(cls):

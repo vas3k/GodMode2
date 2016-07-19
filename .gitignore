@@ -31,4 +31,4 @@ pip-log.txt
 .DS_Store
 
 local_settings.py
-# db/godmode.sqlite
+# internal/godmode.sqlite

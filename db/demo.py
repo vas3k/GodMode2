@@ -5,7 +5,7 @@ from base.db import BaseDatabase
 
 
 class DemoDatabase(BaseDatabase):
-    dsn = "sqlite:///db/demo.sqlite"
+    dsn = "sqlite:///internal/demo.sqlite"
 
 
 DemoDatabase.bind()

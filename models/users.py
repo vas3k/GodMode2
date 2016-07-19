@@ -6,7 +6,7 @@ from base.model import BaseAdminModel
 from base.widget import BaseWidget
 from common.acl import ACL
 from groups.demo import DemoGroup
-from tables.demo import User, DemoDatabase
+from db.demo import User, DemoDatabase
 from widgets.boolean import BooleanReverseWidget
 
 

@@ -1,39 +1,49 @@
-import glob
 import logging
-import os
 import sys
 from collections import defaultdict
+from urllib.parse import urlencode
 
 from flask import Flask, g, request
 from raven.contrib.flask import Sentry
 
 import settings
-from base.model import BaseAdminModel
 from common.acl import ACL
 from common.exceptions import GodModeException, AuthFailed, BadParams
+from db.godmode import GodModeDatabase
+from models.godmode_auth import GodModeAuthAdminModel
 from models.godmode_log import GodModeLogAdminModel
+from models.godmode_policies import GodModePoliciesAdminModel
+from models.godmode_sessions import GodModeSessionsAdminModel
 from models.godmode_users import GodModeUsersAdminModel
-from tables.godmode import GodModeDatabase
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 log = logging.getLogger(settings.APP_CODE)
 sentry = Sentry()
 
+internal_model_classes = [
+    GodModeUsersAdminModel,
+    GodModeAuthAdminModel,
+    GodModeSessionsAdminModel,
+    GodModePoliciesAdminModel,
+    GodModeLogAdminModel
+]
 
-class GodModeApp(object):
-    def __init__(self, databases=None):
+
+class GodModeApp:
+    def __init__(self, databases, models):
         self.databases = [GodModeDatabase()] + [db() for db in databases]
         self.flask = Flask(settings.APP_CODE)
         self.init_sentry()
-        self.models, self.models_map = self.load_models()
-        self.initialize_flask()
+        self.models, self.models_map = self.init_models(models)
+        self.init_flask()
         self.load_template_filters()
-        self.debug()
+        if settings.DEBUG:
+            self.debug()
 
     def __call__(self, environ, start_response):
         return self.flask.wsgi_app(environ, start_response)
 
-    def initialize_flask(self):
+    def init_flask(self):
         self.flask.register_error_handler(GodModeException, lambda error: error.handler())
 
         @self.flask.before_request
@@ -62,16 +72,13 @@ class GodModeApp(object):
 
     def init_sentry(self):
         if not settings.DEBUG and settings.SENTRY_DSN:
-            sentry.init_app(
-                    self.flask,
-                    dsn=settings.SENTRY_DSN
-            )
+            sentry.init_app(self.flask, dsn=settings.SENTRY_DSN)
 
-    def load_models(self):
+    def init_models(self, model_classes):
         models = []
         models_map = {}
-        for name, admin in self.__classes_in_directory("models", base=BaseAdminModel):
-            model = admin(app=self)
+        for model_class in internal_model_classes + model_classes:
+            model = model_class(app=self)
             models.append(model)
             if hasattr(model, "db") and hasattr(model, "table") and model.table:
                 if hasattr(model.table, "__tablename__"):
@@ -80,21 +87,6 @@ class GodModeApp(object):
                     models_map["%s_%s" % (model.db.__name__, model.table.__table__.name)] = model
         return models, models_map
 
-    @staticmethod
-    def __classes_in_directory(directory, base):
-        already_known = set()
-        generated_path = os.path.join(os.path.dirname(__file__), directory)
-        for filename in glob.glob("%s/*.py" % generated_path):
-            with open(filename, "r", encoding="utf-8") as source_file:
-                source = source_file.read()
-            code = compile(source, filename, 'exec')
-            namespace = {}
-            exec(code, namespace)
-            for name, klass in namespace.items():
-                if isinstance(klass, type) and klass != base and base in klass.__bases__ and klass not in already_known:
-                    already_known.add(klass)
-                    yield name, klass
-
     def load_template_filters(self):
         @self.flask.template_filter("group_models")
         def group_models(models):
@@ -102,7 +94,7 @@ class GodModeApp(object):
             group_positions = defaultdict(lambda: 0)
             for model in models:
                 if model.group is None:
-                    group_positions[None] = 999999
+                    group_positions[None] = 9999999
                     groups[None].append(model)
                     continue
 
@@ -121,17 +113,12 @@ class GodModeApp(object):
 
         @self.flask.template_global("magic_params")
         def magic_params(request, key, value):
-            params = dict([(k, v) for k, v in request.args.items()])
+            params = dict(request.args or {})  # because of read-only
             if value:
                 params.update({key: value})
-            else:
-                if key in params.keys():
-                    del params[key]
-
-            if params:
-                return "%s?" % request.path + "&".join(["%s=%s" % (k, v) for k, v in params.items()])
-            else:
-                return "%s" % request.path
+            elif key in params.keys():
+                del params[key]
+            return "{}?{}".format(request.path, urlencode(params)) if params else request.path
 
         @self.flask.context_processor
         def godmode_context_processor():
@@ -157,5 +144,5 @@ class GodModeApp(object):
         log.info("URLs: %s" % self.flask.url_map)
 
     def run(self):
-        log.info("Running...")
-        self.flask.run("localhost", 1488, debug=True)
+        log.info("GodMode is running...")
+        self.flask.run(host=settings.HOST, port=settings.PORT, debug=settings.DEBUG)
