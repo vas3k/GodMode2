@@ -38,10 +38,10 @@ Then open your browser at [localhost:1488](http://localhost:1488), enter demo/de
 For example your PostgreSQL database on `localhost` called `dbname`
 and you have the `users` table in your database that you want to manage.
 So your DSN is `postgresql+psycopg2://username:password@localhost/dbname`.
-Check that you have an access to the database from your computer before first step.
+Check that you have an access to the database from your computer before the first step.
 
 **First step:** create new file in `db` directory and name it for example `my.py`.
-You can use the example from demo.py.
+You can use `demo.py` as an example.
 If you're familiar with SQLAlchemy it will be easy.
 
 ```python
@@ -53,12 +53,12 @@ from base.db import BaseDatabase
 class MyDatabase(BaseDatabase):
     dsn = "postgresql+psycopg2://username:password@postgres.example.com/dbname"
 
-MyDatabase.bind()
+MyDatabase.bind()  # you need to call bind() before any table declarations
 
 
 class User(MyDatabase.TableBase):
     __table__ = sa.Table("users", MyDatabase.metadata, autoload=True)
-    # you can specify all table columns here, but autoload=True will try to do it for you
+    # you can declare your table columns here, but autoload=True will try to do it for you
 ```
 
 **Second step:** create new model file for users admin in `models` directory. For example `users.py`.
@@ -75,7 +75,7 @@ class UsersAdminModel(BaseAdminModel):
     icon = "icon-user"
 ```
 
-**Third step:** modify `app.py` file in the root directory and specify your database class and models classes.
+**Third step:** modify `app.py` file in the root directory and specify your database and model classes.
 
 ```python
 import settings
@@ -95,6 +95,8 @@ if settings.DEBUG:
 ```
 
 Now run `$ python3 app.py` and open [localhost:1488](http://localhost:1488). You should see your Users table in the sidebar.
+
+Great, you've just created your first simple CRUD for `users` table. Check the Usage section to learn how to configure it.
 
 ## Usage
 
