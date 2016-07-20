@@ -98,6 +98,8 @@ Now run `$ python3 app.py` and open [localhost:1488](http://localhost:1488). You
 
 Great, you've just created your first simple CRUD for `users` table. Check the Usage section to learn how to configure it.
 
+Maybe one day all these steps will be automated by the one script.
+
 ## Usage
 
 UNDER CONSTRUCTION
@@ -122,8 +124,6 @@ Other great projects for automatic admin interfaces:
 
 ## License
 vas3k (c) 2016+
-
-Special thanks to [Access Denied](https://github.com/IljaKazakov).
 
 Licensed under the [WTFPL](http://www.wtfpl.net/) license.
 Full text of the license can be found in the LICENSE.txt file.

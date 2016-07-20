@@ -108,7 +108,7 @@ class GodModeApp:
         def no_exception(item, default=""):
             try:
                 return str(item)
-            except ValueError:
+            except:
                 return default
 
         @self.flask.template_global("magic_params")
