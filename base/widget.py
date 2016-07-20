@@ -1,10 +1,9 @@
 import html
 
 import jinja2
-from flask import render_template
 
 
-class BaseWidget(object):
+class BaseWidget:
     filterable = True
 
     def __init__(self, name, meta, model):
@@ -24,9 +23,6 @@ class BaseWidget(object):
 
     def render_details(self, item):
         return self.render_list(item)
-
-    def render(self, template, **context):
-        return render_template(template, **context)
 
     def parse_value(self, value):
         if not value and self.meta is not None:

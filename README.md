@@ -203,11 +203,11 @@ app = GodModeApp(
 
 ```python
 class MyListView(BaseListView):
-    acl = ACL.ADMIN                         # lowest ACL group who has access to this view
+    acl = ACL.MODERATOR                     # lowest ACL group who has access to this view
     title = "My List"                       # title for HTML
     template = "list.html"                  # you can specify your template for this view
     fields = [...]                          # like "fields" in model, but specific for this view
-    sorting = ["id", "name"]                # fields
+    sorting = ["id", "name"]                # fields which allowed to sorting (default = None — all fields)
     batch_actions = [MyBatchAction]         # see screenshot above
     object_actions = [MyObjectAction]
     max_per_page = 100
@@ -217,11 +217,47 @@ class MyListView(BaseListView):
 
 ### Actions
 
-UNDER CONSTRUCTION
+```python
+class MyAction(BaseAction):
+    title = "Ban"
+    name = "ban"
+    acl = ACL.ADMIN
+    enable_log = True
+
+    def render_form(self, *args, **kwargs):
+        # defines how to render the form of this action (if it has a form)
+        return render_template("actions/button_action.html", url=self.name, button_label="Submit")
+
+    def do_item_action(self, *args, **kwargs):
+        # some code then action is executed, kwargs have all request parameters
+        # but all you usually need is kwargs["id"]
+        id = kwargs.pop("id")
+        self.model.update(id=id, is_banned=True)
+        return render_template("success.html", message="User {} was banned".format(id))
+```
 
 ### Widgets
 
-UNDER CONSTRUCTION
+```python
+class MyWidget(BaseWidget):
+    filterable = True   # allows you to filter by this field
+
+    def render_list(self, item):
+        # defines how to render this field in ListView
+
+    def render_edit(self, item=None):
+        # how to render this field in EditView
+        pass
+
+    def render_details(self, item):
+        # how to render this field in DetailsView
+        pass
+
+    def parse_value(self, value):
+        # how to parse string representation of this value
+        # submitted from HTML form on editing or creation
+        pass
+```
 
 ### Groups
 
@@ -246,7 +282,7 @@ You can create any group for yourself but don't forget to put it into PRIORITY l
 * ALL specifies that module is public even for unauthorized users. Made for login screen, don't know why they can be useful for you.
 
 Policies are written in a very bad and unoptimized way, so they really need a huge refactoring.
-*Don't use it for now.*
+**Don't use it for now.**
 
 ## Future Plans
 
