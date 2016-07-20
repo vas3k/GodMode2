@@ -16,4 +16,4 @@ class PolygonWidget(BaseWidget):
         value = getattr(item, self.name, None) if item else None
         value = str(value if value is not None else "")
         value = value.replace('"', "&quot;")
-        return render_template("widgets/polygon.html", name=self.name, value=value)
+        return render_template("widgets/edit/polygon.html", name=self.name, value=value)

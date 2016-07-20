@@ -1,10 +1,10 @@
 import jinja2
 from flask import render_template
+from sqlalchemy.sql.elements import TextClause
 
 
 class BaseWidget:
     filterable = True
-    template = "widgets/text.html"
 
     def __init__(self, name, meta, model):
         self.name = name
@@ -18,9 +18,12 @@ class BaseWidget:
     @property
     def default(self):
         if self.meta.default or self.meta.server_default:
-            return (self.meta.default or self.meta.server_default).arg
+            default = (self.meta.default or self.meta.server_default).arg
+            if isinstance(default, TextClause):
+                default = ""
         else:
-            return ""
+            default = ""
+        return default
 
     def render_list(self, item):
         value = getattr(item, self.name, None)
@@ -29,7 +32,7 @@ class BaseWidget:
     def render_edit(self, item=None):
         value = str(getattr(item, self.name, None) or "")
         value = jinja2.escape(value)
-        return render_template(self.template, name=self.name, value=value, default=self.default)
+        return render_template("widgets/edit/text.html", name=self.name, value=value, default=self.default)
 
     def render_details(self, item):
         return self.render_list(item)

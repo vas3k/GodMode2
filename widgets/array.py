@@ -14,14 +14,12 @@ class ArrayWidget(BaseWidget):
         return "[]"
 
     def render_edit(self, item=None):
-        value = str(getattr(item, self.name, None) or "")
+        value = getattr(item, self.name, None)
         if value:
-            value = value.replace('"', "&quot;")
-            value = value.replace("'", '"')
-            value = value.replace("None", "null")  # FIXME: блядь как же это хуево, но нет времени
-            value = json.loads(value)
-        value = jinja2.escape(json.dumps(value))
-        return render_template(self.template, name=self.name, value=value, default=self.default)
+            if isinstance(value, str):
+                value = json.loads(value)
+            value = jinja2.escape(json.dumps(value))
+        return render_template("widgets/edit/text.html", name=self.name, value=value, default=self.default)
 
     def parse_value(self, value):
         if not value and self.meta is not None:

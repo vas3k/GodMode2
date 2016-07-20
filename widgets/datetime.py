@@ -6,8 +6,6 @@ from base.widget import BaseWidget
 
 
 class DatetimeWidget(BaseWidget):
-    template = "widgets/datetime.html"
-
     def render_list(self, item):
         value = getattr(item, self.name, None)
         try:
@@ -25,7 +23,7 @@ class DatetimeWidget(BaseWidget):
 
     def render_edit(self, item=None):
         value = self.render_list(item)
-        return render_template(self.template, name=self.name, value=value, default=self.default)
+        return render_template("widgets/edit/datetime.html", name=self.name, value=value, default=self.default)
 
     def parse_value(self, value):
         if value:
