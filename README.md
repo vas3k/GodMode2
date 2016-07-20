@@ -102,7 +102,7 @@ Maybe one day all these steps will be automated by the one script.
 
 ## Usage
 
-UNDER CONSTRUCTION
+![list_view](static/list_view.png?raw=true)
 
 ### Databases and Tables
 
@@ -201,15 +201,52 @@ app = GodModeApp(
 
 ### Views
 
+```python
+class MyListView(BaseListView):
+    acl = ACL.ADMIN                         # lowest ACL group who has access to this view
+    title = "My List"                       # title for HTML
+    template = "list.html"                  # you can specify your template for this view
+    fields = [...]                          # like "fields" in model, but specific for this view
+    sorting = ["id", "name"]                # fields
+    batch_actions = [MyBatchAction]         # see screenshot above
+    object_actions = [MyObjectAction]
+    max_per_page = 100
+    has_list_delete = True                  # if you have DeleteView but want to hide [x] button from ListView
+    default_sorting = "id desc"             # default ordering, better specify in SQLAlchemy manner: User.id.desc()
+```
+
 ### Actions
+
+UNDER CONSTRUCTION
 
 ### Widgets
 
+UNDER CONSTRUCTION
+
 ### Groups
+
+Groups allows you to combine models into logical sets in sidebar.
+Models without group have a higher priority and displayed at the top of sidebar.
+
+```python
+class MyGroup(BaseGroup):
+    acl = ACL.MODERATOR   # you can hide whole group from users lower than MODERATOR level
+    name = "Group name"   # title to display in sidebar
+    index = 1000          # higher index -> higher position
+```
 
 ### ACL's and policies
 
+ACL's and their priorities are defined in `common/acl.py` file: `PRIORITY = [SUPERUSER, ADMIN, MODERATOR, ALL]`.
+You can create any group for yourself but don't forget to put it into PRIORITY list.
 
+* SUPERUSER is a group of users with the highest privileges. They have permission to do everything in GodMode. Use carefully.
+* ADMIN's have all permissions to edit all databases but can't create and manage other GodMode users.
+* MODERATOR's are read-only users by default. You're able to hide some models, views, groups and actions from moderators.
+* ALL specifies that module is public even for unauthorized users. Made for login screen, don't know why they can be useful for you.
+
+Policies are written in a very bad and unoptimized way, so they really need a huge refactoring.
+*Don't use it for now.*
 
 ## Future Plans
 
