@@ -8,9 +8,9 @@ class BitStringWidget(BaseWidget):
     }
 
     def render_details(self, item):
-        value = str(getattr(item, self.name, None))
+        value = self.render_list(item)
         if not value:
-            return "EMPTY"
+            return "[EMPTY]"
 
         value = int(value, 2)
         results = []

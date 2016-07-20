@@ -11,7 +11,7 @@ class BooleanWidget(BaseWidget):
 
     def render_edit(self, item=None):
         value = getattr(item, self.name, None) if item else None
-        return "<input type='checkbox' name='%s' value='1' %s>" % (self.name, "checked='checked'" if value else "")
+        return "<input type='checkbox' name='{}' value='1' {}>".format(self.name, "checked='checked'" if value else "")
 
     def parse_value(self, value):
         return bool(value)

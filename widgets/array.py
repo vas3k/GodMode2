@@ -1,5 +1,6 @@
-import html
 import json
+
+import jinja2
 
 from base.widget import BaseWidget
 
@@ -14,8 +15,7 @@ class ArrayWidget(BaseWidget):
             value = value.replace("'", '"')
             value = value.replace("None", "null")  # FIXME: блядь как же это хуево, но нет времени
             value = json.loads(value)
-        return """<input type="text" name="%s" value="%s">""" % (
-        self.name, html.escape(json.dumps(value) if value else "[]"))
+        return """<input type="text" name="%s" value="%s">""" % (self.name, jinja2.escape(json.dumps(value) if value else "[]"))
 
     def parse_value(self, value):
         if not value and self.meta is not None:

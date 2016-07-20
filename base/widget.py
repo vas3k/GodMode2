@@ -1,5 +1,3 @@
-import html
-
 import jinja2
 
 
@@ -13,13 +11,12 @@ class BaseWidget:
         self.model = model
 
     def render_list(self, item):
-        value = str(getattr(item, self.name, "MISSING"))
-        return jinja2.escape(value)
+        value = str(getattr(item, self.name, None))
+        return jinja2.escape(value) if value else None
 
     def render_edit(self, item=None):
         value = str(getattr(item, self.name, None) or "")
-        value = jinja2.escape(value)
-        return """<input type="text" name="%s" value="%s">""" % (self.name, html.escape(value))
+        return """<input type="text" name="{}" value="{}">""".format(self.name, jinja2.escape(value))
 
     def render_details(self, item):
         return self.render_list(item)

@@ -292,6 +292,7 @@ Policies are written in a very bad and unoptimized way, so they really need a hu
 * Buy more beer
 * Fix HTML/CSS bugs
 * Support default values from database
+* Rewrite policies
 * Security test for XSS and injections (be careful with that, check all models you create and send me pull requests)
 * Think about better filtering/sorting interface
 * Make an install~~.php~~ file for easier cold start
