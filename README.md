@@ -35,7 +35,71 @@ Then open your browser at [localhost:1488](http://localhost:1488), enter demo/de
 
 ## Quick Start
 
-UNDER CONSTRUCTION
+For example your DSN is `postgresql+psycopg2://username:password@postgres.example.com/dbname`.
+And you have two tables in your database: users and posts.
+Check that you have an access to the database from your computer.
+
+**First step:** create new file in `db` directory. You can use example from demo.py.
+If you're familiar with SQLAlchemy it will be easy. Let's call it `my.py`.
+
+```python
+import sqlalchemy as sa
+from sqlalchemy.orm import relationship
+
+from base.db import BaseDatabase
+
+
+class MyDatabase(BaseDatabase):
+    dsn = "postgresql+psycopg2://username:password@postgres.example.com/dbname"
+
+
+MyDatabase.bind()
+
+
+class User(MyDatabase.TableBase):
+    __table__ = sa.Table('users', MyDatabase.metadata, autoload=True)
+
+
+class Post(MyDatabase.TableBase):
+    __table__ = sa.Table('posts', MyDatabase.metadata, autoload=True)
+
+    user = relationship('User')
+```
+
+**Second step:** create new model file for users admin in `models` directory. For example `users.py`.
+
+```python
+from base.model import BaseAdminModel
+from db.my import MyDatabase, User
+
+class UsersAdminModel(BaseAdminModel):
+    db = MyDatabase
+    name = "users"  # for URL's
+    title = "Users"  # for sidebar
+    icon = "icon-user"
+    table = User
+```
+
+**Third step:** modify `app.py` file in the root directory and specify your database class and models classes.
+
+```python
+import settings
+from godmode import GodModeApp
+from db.my import MyDatabase
+from models.users import UsersAdminModel
+
+app = GodModeApp(
+    databases=[MyDatabase],
+    models=[
+        UsersAdminModel,
+    ]
+)
+
+if settings.DEBUG:
+    app.run()
+```
+
+Now run `$ python3 app.py` and open [localhost:1488](http://localhost:1488). You should see your Users table in the sidebar.
 
 ## Usage
 
