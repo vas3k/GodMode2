@@ -104,6 +104,109 @@ Maybe one day all these steps will be automated by the one script.
 
 UNDER CONSTRUCTION
 
+### Databases and Tables
+
+`db/<your_db_name>.py`
+
+```python
+# how to connect to your database
+class FirstDatabase(BaseDatabase):
+    dsn = "sqlite:///internal/demo.sqlite"
+
+# bind your database class with engine (call it before any table declaration!)
+FirstDatabase.bind()
+
+# you even can have multiple databases (but better to describe them in separate files)
+class SecondDatabase(BaseDatabase):
+    dsn = "postgresql+psycopg2://username:password@postgres.example.com/dbname"
+
+SecondDatabase.bind()
+
+# describe couple of tables
+class User(FirstDatabase.TableBase):
+    __table__ = sa.Table('users', FirstDatabase.metadata, autoload=True)
+
+
+class Post(DemoDatabase.TableBase):
+    __table__ = sa.Table('posts', FirstDatabase.metadata, autoload=True)
+
+    # if you want GodMode to make fast links for you
+    user = relationship('User')
+```
+
+Now tell GodMode about all your databases by editing `app.py`.
+
+```python
+app = GodModeApp(
+    databases=[DemoDatabase, SecondDatabase],
+    models=[]
+)
+```
+
+### Models
+
+`models/<name_your_model>.py`
+
+```python
+class YourAdminModel(BaseAdminModel):
+    db = FirstDatabase                      # database class
+    table = User                            # table class
+    acl = ACL.ADMIN                         # lowest ACL group who has access to this model
+    name = "my_table"                       # name for url building (must be unique)
+    title = "My Table"                      # title for sidebar
+    icon = "icon-loadingeight"              # icon from webhostinghub.com/glyphs/
+    index = 0                               # higher index -> higher position
+    place = "sidebar"                       # "sidebar" (left) or "navbar" (top)
+    group = None                            # group class (see Groups section)
+    actions = []                            # default actions for all views (see Actions section)
+    excluded_fields_for_log = ["password"]  # excludes "password" field from GodMode log
+    enable_log = True                       # GodMode logs all activity to own log, but you can turn it off for this model
+    fields = [                              # default fieldset for all views
+        "id",
+        ("name", {"widget": NameWidget}),
+        "bio",
+        ("is_locked", {"widget": BooleanWidget})
+    ]
+    id_field = "id"                         # primary key field (for relative linking)
+    custom_widgets = {                      # global widget configuration for all views
+        "name": NameWidget                  # do like this if you don't want to specify all fields of big table
+    }
+
+    list_view = BaseListView                # use default ListView for display this table (default behaviour)
+    edit_view = None                        # do not generate create, edit and delete views,
+    create_view = None                      # for example for read-only tables
+    delete_view = None
+
+    # you can make your custom details view based on BaseDetailsView
+    # for example if you want to use your own template
+    class CustomDetailsView(BaseDetailsView):
+        template = "views/my_custom_details.html"
+
+    details_view = CustomDetailsView        # see Views section for more info
+```
+
+Now return to the `app.py` file to specify new models for your app.
+
+
+```python
+app = GodModeApp(
+    databases=[FirstDatabase, SecondDatabase],
+    models=[YourAdminModel]
+)
+```
+
+### Views
+
+### Actions
+
+### Widgets
+
+### Groups
+
+### ACL's and policies
+
+
+
 ## Future Plans
 
 * Buy more beer

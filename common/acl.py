@@ -3,7 +3,7 @@ from flask import g
 from db.godmode import PoliciesTable, GodModeDatabase
 
 
-class ACL(object):
+class ACL:
     SUPERUSER = "superuser"
     ADMIN = "admin"
     MODERATOR = "moderator"

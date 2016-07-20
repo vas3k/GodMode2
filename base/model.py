@@ -37,7 +37,7 @@ class BaseAdminModel:
     display = None
     id_field = "id"
     custom_widgets = {}
-    excluded_fields_for_log = []
+    excluded_fields_for_log = ["password", "pwd", "pass", "secret"]
     details_fields_on_delete = []
 
     views = {
