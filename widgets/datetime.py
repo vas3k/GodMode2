@@ -1,9 +1,13 @@
 from datetime import datetime, date
 
+from flask import render_template
+
 from base.widget import BaseWidget
 
 
 class DatetimeWidget(BaseWidget):
+    template = "widgets/datetime.html"
+
     def render_list(self, item):
         value = getattr(item, self.name, None)
         try:
@@ -21,7 +25,7 @@ class DatetimeWidget(BaseWidget):
 
     def render_edit(self, item=None):
         value = self.render_list(item)
-        return "<input type='datetime-local' name='%s' value='%s' step='1'>" % (self.name, value or "")
+        return render_template(self.template, name=self.name, value=value, default=self.default)
 
     def parse_value(self, value):
         if value:

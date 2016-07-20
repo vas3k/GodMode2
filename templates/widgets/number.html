@@ -1,0 +1,5 @@
+{% if value is not none %}
+    <input type="number" name="{{ name }}" value="{{ value }}" style='width: 100px;'>
+{% else %}
+    <input type="number" name="{{ name }}" value="{{ default or "" }}" style='width: 100px;'>
+{% endif %}
