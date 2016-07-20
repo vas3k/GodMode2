@@ -35,16 +35,17 @@ Then open your browser at [localhost:1488](http://localhost:1488), enter demo/de
 
 ## Quick Start
 
-For example your DSN is `postgresql+psycopg2://username:password@postgres.example.com/dbname`.
-And you have two tables in your database: users and posts.
-Check that you have an access to the database from your computer.
+For example your PostgreSQL database on `localhost` called `dbname`
+and you have the `users` table in your database that you want to manage.
+So your DSN is `postgresql+psycopg2://username:password@localhost/dbname`.
+Check that you have an access to the database from your computer before first step.
 
-**First step:** create new file in `db` directory. You can use example from demo.py.
-If you're familiar with SQLAlchemy it will be easy. Let's call it `my.py`.
+**First step:** create new file in `db` directory and name it for example `my.py`.
+You can use the example from demo.py.
+If you're familiar with SQLAlchemy it will be easy.
 
 ```python
 import sqlalchemy as sa
-from sqlalchemy.orm import relationship
 
 from base.db import BaseDatabase
 
@@ -52,18 +53,12 @@ from base.db import BaseDatabase
 class MyDatabase(BaseDatabase):
     dsn = "postgresql+psycopg2://username:password@postgres.example.com/dbname"
 
-
 MyDatabase.bind()
 
 
 class User(MyDatabase.TableBase):
-    __table__ = sa.Table('users', MyDatabase.metadata, autoload=True)
-
-
-class Post(MyDatabase.TableBase):
-    __table__ = sa.Table('posts', MyDatabase.metadata, autoload=True)
-
-    user = relationship('User')
+    __table__ = sa.Table("users", MyDatabase.metadata, autoload=True)
+    # you can specify all table columns here, but autoload=True will try to do it for you
 ```
 
 **Second step:** create new model file for users admin in `models` directory. For example `users.py`.
@@ -74,10 +69,10 @@ from db.my import MyDatabase, User
 
 class UsersAdminModel(BaseAdminModel):
     db = MyDatabase
+    table = User
     name = "users"  # for URL's
     title = "Users"  # for sidebar
     icon = "icon-user"
-    table = User
 ```
 
 **Third step:** modify `app.py` file in the root directory and specify your database class and models classes.
