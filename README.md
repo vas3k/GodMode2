@@ -127,7 +127,7 @@ class User(FirstDatabase.TableBase):
     __table__ = sa.Table('users', FirstDatabase.metadata, autoload=True)
 
 
-class Post(DemoDatabase.TableBase):
+class Post(FirstDatabase.TableBase):
     __table__ = sa.Table('posts', FirstDatabase.metadata, autoload=True)
 
     # if you want GodMode to make fast links for you
@@ -159,8 +159,8 @@ class YourAdminModel(BaseAdminModel):
     place = "sidebar"                       # "sidebar" (left) or "navbar" (top)
     group = None                            # group class (see Groups section)
     actions = []                            # default actions for all views (see Actions section)
-    excluded_fields_for_log = ["password"]  # excludes "password" field from GodMode log
-    enable_log = True                       # GodMode logs all activity to own log, but you can turn it off for this model
+    enable_log = False                      # turn off activity logging for this model
+    excluded_fields_for_log = ["password"]  # exclude "password" field from activity log
     fields = [                              # default fieldset for all views
         "id",
         ("name", {"widget": NameWidget}),
@@ -168,13 +168,17 @@ class YourAdminModel(BaseAdminModel):
         ("is_locked", {"widget": BooleanWidget})
     ]
     id_field = "id"                         # primary key field (for relative linking)
-    custom_widgets = {                      # global widget configuration for all views
-        "name": NameWidget                  # do like this if you don't want to specify all fields of big table
+    custom_widgets = {                      # default widget classes for certain fields
+        "name": NameWidget                  # if you don't want to specify all fields in big table
     }
 
-    list_view = BaseListView                # use default ListView for display this table (default behaviour)
-    edit_view = None                        # do not generate create, edit and delete views,
-    create_view = None                      # for example for read-only tables
+    # use BaseListView for display this table (default behaviour)
+    list_view = BaseListView
+
+    # do not generate create, edit and delete views,
+    # for example for read-only tables
+    edit_view = None
+    create_view = None
     delete_view = None
 
     # you can make your custom details view based on BaseDetailsView
@@ -191,7 +195,7 @@ Now return to the `app.py` file to specify new models for your app.
 ```python
 app = GodModeApp(
     databases=[FirstDatabase, SecondDatabase],
-    models=[YourAdminModel]
+    models=[YourAdminModel]  # put new model here
 )
 ```
 
