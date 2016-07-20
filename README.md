@@ -224,15 +224,15 @@ class MyAction(BaseAction):
     acl = ACL.ADMIN
     enable_log = True
 
+    # defines how to render the form of this action (if it has a form)
     def render_form(self, *args, **kwargs):
-        # defines how to render the form of this action (if it has a form)
         return render_template("actions/button_action.html", url=self.name, button_label="Submit")
 
+    # some code then action is executed, kwargs have all request parameters
+    # but all you usually need is kwargs["id"]
     def do_item_action(self, *args, **kwargs):
-        # some code then action is executed, kwargs have all request parameters
-        # but all you usually need is kwargs["id"]
-        id = kwargs.pop("id")
-        self.model.update(id=id, is_banned=True)
+        user_id = kwargs.pop("id")
+        self.model.update(id=user_id, is_banned=True)
         return render_template("success.html", message="User {} was banned".format(id))
 ```
 
@@ -242,21 +242,24 @@ class MyAction(BaseAction):
 class MyWidget(BaseWidget):
     filterable = True   # allows you to filter by this field
 
+    # defines how to render this field in ListView
     def render_list(self, item):
-        # defines how to render this field in ListView
+        value = getattr(item, self.name, "MISSING")
+        return jinja2.escape(value)
 
+    # how to render this field in EditView
     def render_edit(self, item=None):
-        # how to render this field in EditView
-        pass
+        value = self.render_list(item)
+        return render_template("widgets/my_widget.html", widget=self, value=value)
 
+    # how to render this field in DetailsView
     def render_details(self, item):
-        # how to render this field in DetailsView
-        pass
+        return self.render_list(item)
 
+    # how to parse string representation of this value
+    # submitted from HTML form on editing or creation
     def parse_value(self, value):
-        # how to parse string representation of this value
-        # submitted from HTML form on editing or creation
-        pass
+        return some_magic_conversions(value)
 ```
 
 ### Groups
