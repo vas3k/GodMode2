@@ -6,7 +6,7 @@ class FloatWidget(BaseWidget):
         value = getattr(item, self.name, None)
         try:
             return round(value, 3)
-        except ValueError:
+        except:
             return value
 
     def parse_value(self, value):
