@@ -113,7 +113,7 @@ class GodModeApp:
 
         @self.flask.template_global("magic_params")
         def magic_params(request, key, value):
-            params = dict(request.args or {})  # because of read-only
+            params = request.args.to_dict(flat=True)
             if value:
                 params.update({key: value})
             elif key in params.keys():

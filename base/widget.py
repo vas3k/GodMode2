@@ -27,7 +27,7 @@ class BaseWidget:
 
     def render_list(self, item):
         value = getattr(item, self.name, None)
-        return jinja2.escape(str(value)) if value else None
+        return jinja2.escape(str(value)) if value is not None else None
 
     def render_edit(self, item=None):
         value = str(getattr(item, self.name, None) or "")
