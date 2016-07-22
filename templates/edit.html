@@ -23,7 +23,7 @@
                     <label for="edit-{{ meta.name }}">{{ meta.name }}<br>
                         <small>{{ meta.type | no_exception("???") }}</small>
                     </label>
-                    {{ widget.render_edit(item) | safe }}
+                    {{ widget.render_edit(form=form, item=item) | safe }}
                 </div>
             {% endfor %}
 

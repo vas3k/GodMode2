@@ -1,5 +1,7 @@
+import copy
 import logging
 
+import wtforms
 from flask import g, redirect, render_template
 from flask.views import MethodView
 
@@ -24,7 +26,7 @@ class BaseView(MethodView):
     actions = []
     fields = []
     display = []
-    custom_widgets = {}
+    widgets = {}
 
     def __init__(self, model, app):
         log.info("Init view: {}".format(self.__class__.__name__))
@@ -32,11 +34,14 @@ class BaseView(MethodView):
         self.model = model
         self.policy = "{}.{}".format(self.model.policy, self.name)
         self.fields_obj = []
-        self.widgets = {}
+        self.all_widgets = {}
         self.all_columns_with_metadata = []
         self.all_columns = []
         self.actions_obj = []
-        self.custom_widgets = self.custom_widgets or self.model.custom_widgets
+        if self.model.widgets:
+            all_custom_widgets = self.model.widgets
+            all_custom_widgets.update(self.widgets or {})
+            self.widgets = all_custom_widgets
         self.init_actions()
         if self.model.table is not None:
             self.init_fields()
@@ -49,39 +54,34 @@ class BaseView(MethodView):
         populate_display_with_fields = not self.display
 
         self.fields_obj = []
-        self.widgets = {}
+        self.all_widgets = {}
         for field in self.fields:
-            field_options = {}
-            if isinstance(field, list) or isinstance(field, tuple):
-                field_name, field_options = field
-            else:
-                field_name = field
-
-            field_options = dict(field_options)
-
             column_with_metadata = None
             for column_with_metadata in self.all_columns_with_metadata:
-                if column_with_metadata.name == field_name:
+                if column_with_metadata.name == field:
                     break
 
-            if column_with_metadata is None and field_options.get("widget") is None:
-                raise Exception("No column named '{}' in table metadata, specify a widget!".format(field_name))
+            if column_with_metadata is None and field not in self.widgets:
+                raise Exception("No column named '{}', If you want your own column, please "
+                                "specify a widget in 'widgets' property!".format(field))
 
-            if field_options.get("widget"):
-                column_widget = field_options["widget"](field_name, meta=column_with_metadata, model=self.model)
-            elif field_name in self.custom_widgets:
-                column_widget = self.custom_widgets[field_name](field_name, meta=column_with_metadata, model=self.model)
+            custom_widget = self.widgets.get(field)
+            if custom_widget:
+                column_widget = custom_widget(field, meta=column_with_metadata, model=self.model)
             else:
-                column_widget = WidgetFactory.build(field_name, meta=column_with_metadata, model=self.model)
+                column_widget = WidgetFactory.build(field, meta=column_with_metadata, model=self.model)
 
-            field_options["widget"] = column_widget
-            field_options["meta"] = column_with_metadata
-            field_options["filterable"] = column_widget.filterable
+            field_options = {
+                "widget": column_widget,
+                "meta": column_with_metadata,
+                "filterable": column_widget.filterable
+            }
 
             if populate_display_with_fields:
-                self.display.append(field_name)
-            self.fields_obj.append((field_name, field_options))
-            self.widgets[field_name] = column_widget
+                self.display.append(field)
+
+            self.fields_obj.append((field, field_options))
+            self.all_widgets[field] = column_widget
 
     def init_actions(self):
         if self.actions:
@@ -89,10 +89,10 @@ class BaseView(MethodView):
             for action in self.actions or []:
                 action_object = action(app=self.app, model=self.model, view=self)
                 self.app.flask.add_url_rule(
-                        rule=join_url([self.model.url_prefix, self.model.name, "<id>", action.name]),
-                        endpoint="{}_{}".format(self.__class__.__name__, action.__name__),
-                        view_func=action_object.dispatch_request,
-                        methods=action_object.methods
+                    rule=join_url([self.model.url_prefix, self.model.name, "<id>", action.name]),
+                    endpoint="{}_{}".format(self.__class__.__name__, action.__name__),
+                    view_func=action_object.dispatch_request,
+                    methods=action_object.methods
                 )
                 self.actions_obj.append(action_object)
 
@@ -112,3 +112,13 @@ class BaseView(MethodView):
             raise AccessDenied(message="Looks like you cannot view this page.")
 
         return super().dispatch_request(*args, **kwargs)
+
+    @property
+    def form(self):
+        fields = {}
+        for column_name, column_options in self.fields_obj:
+            field = copy.copy(column_options["widget"].field)
+            field.label = column_options["widget"].pretty_name
+            field.default = column_options["widget"].default
+            fields[column_name] = field
+        return type("dummy_form", (wtforms.Form,), fields)

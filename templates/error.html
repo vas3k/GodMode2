@@ -3,28 +3,14 @@
 {% block content %}
     <div class="error">
         {{ message }}
-        {% if filter_error %}
-            <p><b>How to use the filter (examples):</b></p>
-            <p>
-            <ol style="text-align: left">
-                <li><b>id=13</b> - this will display an item with such id.</li>
-                <li><b>is_deleted>0</b> or <b>is_deleted!=0</b> (Comments) - you might find some cool
-                    stuff or kill some of your brain cells.
-                </li>
-                <li><b>country='Poland'</b> (Users) - is it the 1st of September yet?</li>
-                <li><b>city='Vilnius' and is_verified=True</b> (Users) - this will show whom to avoid
-                    if you have messed up and if you are in Vilnius.
-                </li>
-                <li><b>text like '%mod%'</b> (Posts/Comments) - read some sweet feedback, such as "that faggot
-                    <b>mod</b>erator has restricted me again!".
-                </li>
-                <li><b>text is null and media is not null</b> (Posts) - if you just came here for pictures or videos.
-                </li>
-                <li><b>url::text like '%youtube%'</b> (Posts) - find the YouTube videos.</li>
-                <li><b>repost_count::float / (1 + votes_count::float) > 0.5</b> (Posts) - >50% upswipe.</li>
-
-            </ol>
-            </p>
+        {% if form_errors %}
+            <ul style="margin-top: 40px;">
+            {% for field, errors in form_errors.items() %}
+                {% for error in errors %}
+                    <li>{{ field }}: {{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+            </ul>
         {% endif %}
     </div>
 {% endblock %}

@@ -1,7 +1,7 @@
 # GodMode 2
 
 GodMode is a semi-automatic customizable admin interface generator that lets you add admin interface to any SQL database.
-Written in Python 3.x, Flask and SQLAlchemy reflections.
+Written in Python 3.x, Flask, WTForms and SQLAlchemy reflections.
 
 Automatically creates CRUD pages for any table in your database with ability to customize rows and views, create filters,
 batch actions and manage access policies for users and groups.
@@ -163,13 +163,16 @@ class YourAdminModel(BaseAdminModel):
     excluded_fields_for_log = ["password"]  # exclude "password" field from activity log
     fields = [                              # default fieldset for all views
         "id",
-        ("name", {"widget": NameWidget}),
+        "name",
         "bio",
-        ("is_locked", {"widget": BooleanWidget})
+        "is_locked",
+        "my_custom_field_that_not_in_database"
     ]
     id_field = "id"                         # primary key field (for relative linking)
-    custom_widgets = {                      # default widget classes for certain fields
-        "name": NameWidget                  # if you don't want to specify all fields in big table
+    widgets = {                             # custom widget classes for certain fields
+        "name": NameWidget,
+        "is_locked": BooleanWidget,
+        "my_custom_field_that_not_in_database": MyCustomWidget
     }
 
     # use BaseListView for display this table (default behaviour)
@@ -213,6 +216,7 @@ class MyListView(BaseListView):
     max_per_page = 100
     has_list_delete = True                  # if you have DeleteView but want to hide [x] button from ListView
     default_sorting = "id desc"             # default ordering, better specify in SQLAlchemy manner: User.id.desc()
+    widgets = {}
 ```
 
 ### Actions
@@ -238,28 +242,29 @@ class MyAction(BaseAction):
 
 ### Widgets
 
+Widgets are using great [WTForms](https://github.com/wtforms/wtforms) library for form parsing, validation and rendering. 
+But they are responsible for rendering in all views — create, list, details, delete. 
+If you're familiar with WTForms, you have all the superpowers in your hand. Otherwise check it's documentation. 
+
 ```python
 class MyWidget(BaseWidget):
     filterable = True   # allows you to filter by this field
-
-    # defines how to render this field in ListView
-    def render_list(self, item):
-        value = getattr(item, self.name, "MISSING")
-        return jinja2.escape(value)
+    field = wtforms.StringField()  # field class from WTForms
+    field_kwargs = {"style": "max-width: 100px;"}  # kwargs for WTForms Field rendering
 
     # how to render this field in EditView
-    def render_edit(self, item=None):
-        value = self.render_list(item)
-        return render_template("widgets/my_widget.html", widget=self, value=value)
+    def render_edit(self, form=None, item=None):
+        # default implementation with WTForm rendering, but can be overrided
+        pass
+
+    # how to render this field in ListView
+    def render_list(self, item):
+        value = getattr(item, self.name, None)
+        return jinja2.escape(str(value)) if value is not None else "null"
 
     # how to render this field in DetailsView
     def render_details(self, item):
         return self.render_list(item)
-
-    # how to parse string representation of this value
-    # submitted from HTML form on editing or creation
-    def parse_value(self, value):
-        return some_magic_conversions(value)
 ```
 
 ### Groups

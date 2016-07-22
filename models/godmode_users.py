@@ -34,11 +34,16 @@ class GodModeUsersAdminModel(BaseAdminModel):
     fields = [
         "id",
         "login",
-        ("acl", {"widget": AclWidget}),
-        ("password", {"widget": PasswordWidget}),
+        "acl",
+        "password",
         "created_at",
         "updated_at"
     ]
+
+    widgets = {
+        "acl": AclWidget,
+        "password": PasswordWidget
+    }
 
     class UserListView(BaseListView):
         acl = ACL.ADMIN

@@ -1,12 +1,22 @@
 import json
 
+import wtforms
+
 from base.widget import BaseWidget
+
+
+def parse_value(value):
+    try:
+        return json.loads(value) if value else None
+    except Exception as ex:
+        raise ValueError("Bad JSON: {}".format(ex))
 
 
 class JSONWidget(BaseWidget):
     filterable = False
+    field = wtforms.TextAreaField(filters=[parse_value])
 
-    def render_edit(self, item=None):
+    def render_edit(self, form=None, item=None):
         value = getattr(item, self.name, None) if item else None
         if value is not None:
             value = json.dumps(value)
@@ -21,9 +31,3 @@ class JSONWidget(BaseWidget):
             for k, v in value.items():
                 template += "%s: %s<br>" % (k, v)
         return template
-
-    def parse_value(self, value):
-        result = super().parse_value(value)
-        if result is not None:
-            return json.loads(result)
-        return None

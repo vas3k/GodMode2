@@ -34,12 +34,17 @@ class GodModePoliciesAdminModel(BaseAdminModel):
 
     fields = [
         "id",
-        ("godmode_user_id", {"widget": PolicyUserWidget}),
+        "godmode_user_id",
         "policy",
         "params",
-        ("has_access", {"widget": BooleanWidget}),
-        ("is_enabled", {"widget": BooleanWidget})
+        "has_access",
+        "is_enabled",
     ]
+    widgets = {
+        "godmode_user_id": PolicyUserWidget,
+        "has_access": BooleanWidget,
+        "is_enabled": BooleanWidget
+    }
 
     class PolicyListView(BaseListView):
         acl = ACL.ADMIN

@@ -25,32 +25,25 @@ class UsersAdminModel(BaseAdminModel):
     group = DemoGroup
     index = 100
     table = User
-    custom_widgets = {
+    widgets = {
         "is_locked": BooleanReverseWidget
     }
 
-    class UsersListView(BaseListView):
+    class PUsersListView(BaseListView):
         title = "User list"
         sorting = ["id", "name"]
         default_sorting = User.created_at.desc()
         fields = [
             "id",
-            ("name", {"widget": NameWidget}),
+            "name",
             "created_at",
             "post_count",
             "is_locked"
         ]
         object_actions = [BanAction]
         batch_actions = [BanAction]
+        widgets = {
+            "name": NameWidget
+        }
 
-    list_view = UsersListView
-
-    class UsersDetailsView(BaseDetailsView):
-        actions = [BanAction]
-
-    details_view = UsersDetailsView
-
-    class UsersDeleteView(BaseDeleteView):
-        acl = ACL.SUPERUSER
-
-    delete_view = UsersDeleteView
+    list_view = PUsersListView

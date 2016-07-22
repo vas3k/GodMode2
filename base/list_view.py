@@ -30,6 +30,8 @@ class BaseListView(BaseView):
     def __init__(self, model, app):
         super().__init__(model, app)
         self.acl = model.acl
+        self.batch_actions_obj = []
+        self.object_actions_obj = []
         if self.sorting is None:
             self.sorting = self.all_columns
 
@@ -80,17 +82,17 @@ class BaseListView(BaseView):
 
         try:
             raw_rows = self.model.list(
-                    filters=filters,
-                    sort_by=order_by,
-                    limit=limit or self.max_per_page,
-                    offset=offset or 0
+                filters=filters,
+                sort_by=order_by,
+                limit=limit or self.max_per_page,
+                offset=offset or 0
             )
         except exc.SQLAlchemyError as error:
             if hasattr(error, "orig"):
                 message = error.orig
             else:
                 message = str(error)
-            return render_template("error.html", message="Error: %s" % message, filter_error=True)
+            return render_template("error.html", message="Error: {}".format(message), filter_error=True)
         return self.render(
                 rows=raw_rows,
                 filters=filters,

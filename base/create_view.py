@@ -2,7 +2,7 @@ from flask import request, render_template
 
 from base.view import BaseView
 from common.acl import ACL
-from common.exceptions import BadParams, Rejected
+from common.exceptions import Rejected
 
 
 class BaseCreateView(BaseView):
@@ -12,31 +12,17 @@ class BaseCreateView(BaseView):
     acl = ACL.ADMIN
 
     def get(self):
-        return self.render()
+        return self.render(form=self.form())
 
     def post(self):
-        values = {}
-        for column_name, column_options in self.fields_obj:
-            if column_name not in self.display:
-                continue
+        form = self.form(request.form)
 
-            value = request.form.get(column_name)
-            try:
-                widget = self.widgets[column_name]
-            except KeyError:
-                raise BadParams("Column %s is not defined in widgets" % column_name)
-
-            try:
-                parsed_value = widget.parse_value(value)
-            except Exception as ex:
-                raise BadParams("Error in field '%s': %s" % (widget.name, ex))
-
-            if parsed_value is not None:
-                values[widget.name] = parsed_value
+        if not form.validate():
+            return render_template("error.html", message="Validation errors:", form_errors=form.errors)
 
         try:
-            item = self.model.create(**values)
+            self.model.create(**form.data)
         except Exception as ex:
-            raise Rejected("Save error: %s" % ex)
+            raise Rejected("Save error: {}".format(ex))
 
-        return render_template("success.html", message="Successfully created")
+        return render_template("success.html", message="Successfully created.")

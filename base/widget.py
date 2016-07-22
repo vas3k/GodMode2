@@ -1,10 +1,13 @@
 import jinja2
+import wtforms
 from flask import render_template
 from sqlalchemy.sql.elements import TextClause
 
 
 class BaseWidget:
     filterable = True
+    field = wtforms.StringField()
+    field_kwargs = {}
 
     def __init__(self, name, meta, model):
         self.name = name
@@ -25,24 +28,16 @@ class BaseWidget:
             default = ""
         return default
 
-    def render_list(self, item):
-        value = getattr(item, self.name, None)
-        return jinja2.escape(str(value)) if value is not None else None
-
-    def render_edit(self, item=None):
+    def render_edit(self, form=None, item=None):
+        if form:
+            return form[self.name](**self.field_kwargs)
         value = str(getattr(item, self.name, None) or "")
         value = jinja2.escape(value)
-        return render_template("widgets/edit/text.html", name=self.name, value=value, default=self.default)
+        return render_template("widgets/text.html", name=self.name, value=value, default=self.default)
+
+    def render_list(self, item):
+        value = getattr(item, self.name, None)
+        return jinja2.escape(str(value)) if value is not None else "null"
 
     def render_details(self, item):
         return self.render_list(item)
-
-    def parse_value(self, value):
-        if not value and self.meta is not None:
-            if self.meta.default:
-                return self.meta.default
-            elif self.meta.server_default:
-                return self.meta.server_default
-            elif self.meta.nullable:
-                return None
-        return value

@@ -2,7 +2,7 @@ from flask import render_template, request
 
 from base.view import BaseView
 from common.acl import ACL
-from common.exceptions import BadParams, Rejected
+from common.exceptions import Rejected
 
 
 class BaseEditView(BaseView):
@@ -14,32 +14,24 @@ class BaseEditView(BaseView):
     def get(self, id):
         item = self.model.get(id=id)
         if not item:
-            return render_template("error.html", message="Looks like this %s item does not exist." % self.model.name)
-        return self.render(item=item)
+            return render_template("error.html", message="Looks like this {} does not exist.".format(self.model.name))
+        return self.render(item=item, form=self.form(obj=item))
 
     def post(self, id):
-        values = {}
-        for column_name, column_options in self.fields_obj:
-            if column_name not in self.display:
-                continue
+        form = self.form(request.form)
 
-            value = request.form.get(column_name)
-            try:
-                widget = self.widgets[column_name]
-            except KeyError:
-                raise BadParams("Column %s is not defined in widgets" % column_name)
+        if not form.validate():
+            return render_template("error.html", message="Validation errors:", form_errors=form.errors)
 
-            try:
-                values[column_name] = widget.parse_value(value)
-            except Exception as ex:
-                raise BadParams("Error in field '%s' ('%s'): %s" % (column_name, value, ex))
+        updates = dict(form.data)
 
-        if "id" not in values:
-            values["id"] = id
+        if "id" not in updates:
+            updates["id"] = id
 
         try:
-            item = self.model.update(**values)
+            self.model.update(**updates)
         except Exception as ex:
-            raise Rejected("Save error: %s" % ex)
+            raise Rejected("Save error: {}".format(ex))
 
-        return render_template("success.html", message="Successfully saved")
+        return render_template("success.html", message="Successfully saved.")
+

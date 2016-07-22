@@ -19,7 +19,7 @@ class PostsAdminModel(BaseAdminModel):
     group = DemoGroup
     index = 10
     table = Post
-    custom_widgets = {
+    widgets = {
         "body": LongTextWidget,
     }
 
