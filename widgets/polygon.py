@@ -5,6 +5,7 @@ from base.widget import BaseWidget
 
 class PolygonWidget(BaseWidget):
     filterable = False
+    field = None
 
     def render_list(self, item):
         value = getattr(item, self.name, None) if item else None

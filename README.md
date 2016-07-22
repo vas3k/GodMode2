@@ -1,7 +1,7 @@
 # GodMode 2
 
 GodMode is a semi-automatic customizable admin interface generator that lets you add admin interface to any SQL database.
-Written in Python 3.x, Flask, WTForms and SQLAlchemy reflections.
+Written in Python 3.x and Flask, with superpower of WTForms and SQLAlchemy reflections.
 
 Automatically creates CRUD pages for any table in your database with ability to customize rows and views, create filters,
 batch actions and manage access policies for users and groups.
@@ -245,6 +245,8 @@ class MyAction(BaseAction):
 Widgets are using great [WTForms](https://github.com/wtforms/wtforms) library for form parsing, validation and rendering. 
 But they are responsible for rendering in all views — create, list, details, delete. 
 If you're familiar with WTForms, you have all the superpowers in your hand. Otherwise check it's documentation. 
+
+However you can create widgets that are completely independent from WTForms. Check `widgets/polygon.py` for example.
 
 ```python
 class MyWidget(BaseWidget):
