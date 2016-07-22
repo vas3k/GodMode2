@@ -12,7 +12,7 @@ Tested on several pet-projects and medium startups. Good for a quick start becau
 lines of code and may add additional functionality as your product grows.
 
 Best for PostgreSQL, MySQL and SQLite. Also supports other SQLAlchemy drivers: Firebird, Microsoft SQL Server,
-Oracle and Sybase but they were not officially tested.
+Oracle and Sybase but they were not officially tested (welcome to pull-requests and issues).
 
 ![Screenshot](static/screenshot.png?raw=true)
 
@@ -188,6 +188,7 @@ class YourAdminModel(BaseAdminModel):
     # for example if you want to use your own template
     class CustomDetailsView(BaseDetailsView):
         template = "views/my_custom_details.html"
+        widgets = {...}
 
     details_view = CustomDetailsView        # see Views section for more info
 ```
@@ -216,7 +217,9 @@ class MyListView(BaseListView):
     max_per_page = 100
     has_list_delete = True                  # if you have DeleteView but want to hide [x] button from ListView
     default_sorting = "id desc"             # default ordering, better specify in SQLAlchemy manner: User.id.desc()
-    widgets = {}
+    widgets = {
+        "name": TextWidget                  # overwrite or append model widgets
+    }
 ```
 
 ### Actions
@@ -286,7 +289,8 @@ class MyGroup(BaseGroup):
 ACL's and their priorities are defined in `common/acl.py` file: `PRIORITY = [SUPERUSER, ADMIN, MODERATOR, ALL]`.
 You can create any group for yourself but don't forget to put it into PRIORITY list.
 
-* SUPERUSER is a group of users with the highest privileges. They have permission to do everything in GodMode. Use carefully.
+* SUPERUSER is a group of users with the highest privileges. They have permission to do everything in GodMode. 
+Use carefully. Usually 1 superuser per project is enough.
 * ADMIN's have all permissions to edit all databases but can't create and manage other GodMode users.
 * MODERATOR's are read-only users by default. You're able to hide some models, views, groups and actions from moderators.
 * ALL specifies that module is public even for unauthorized users. Made for login screen, don't know why they can be useful for you.
