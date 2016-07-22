@@ -31,11 +31,6 @@ class WidgetFactory:
 
         for sqltype, columntype in WidgetFactory.MAPPING.items():
             if isinstance(meta.type, sqltype):
-                widget = columntype(name, meta, model)
-                # because it's a UnboundField now, you can't simply set the validators
-                if "validators" not in widget.field.kwargs:
-                    widget.field.kwargs["validators"] = []
-                widget.field.kwargs["validators"] += [Optional() if meta.nullable else DataRequired()]
-                return widget
+                return columntype(name, meta, model)
 
         return TextWidget(name, meta, model)
