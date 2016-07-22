@@ -1,13 +1,12 @@
 from datetime import datetime, date
 
 from wtforms.fields.html5 import DateTimeLocalField
-from wtforms.validators import Optional
 
 from base.widget import BaseWidget
 
 
 class DatetimeWidget(BaseWidget):
-    field = DateTimeLocalField(format="%Y-%m-%dT%H:%M:%S", validators=[Optional()])
+    field = DateTimeLocalField(format="%Y-%m-%dT%H:%M:%S")
     field_kwargs = {"step": 1}
 
     def render_list(self, item):

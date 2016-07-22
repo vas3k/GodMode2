@@ -1,5 +1,6 @@
 from sqlalchemy.dialects import postgresql
 from sqlalchemy.sql import sqltypes
+from wtforms.validators import Optional, DataRequired
 
 from widgets.array import ArrayWidget
 from widgets.binary import BinaryWidget
@@ -11,7 +12,7 @@ from widgets.json import JSONWidget
 from widgets.text import TextWidget
 
 
-class WidgetFactory(object):
+class WidgetFactory:
     MAPPING = {
         sqltypes.DateTime: DatetimeWidget,
         sqltypes.Float: FloatWidget,
@@ -30,6 +31,11 @@ class WidgetFactory(object):
 
         for sqltype, columntype in WidgetFactory.MAPPING.items():
             if isinstance(meta.type, sqltype):
-                return columntype(name, meta, model)
+                widget = columntype(name, meta, model)
+                # because it's a UnboundField now, you can't simply set the validators
+                if "validators" not in widget.field.kwargs:
+                    widget.field.kwargs["validators"] = []
+                widget.field.kwargs["validators"] += [Optional() if meta.nullable else DataRequired()]
+                return widget
 
         return TextWidget(name, meta, model)

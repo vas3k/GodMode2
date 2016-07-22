@@ -1,7 +1,7 @@
 from common.acl import ACL
 
 
-class BaseGroup(object):
+class BaseGroup:
     acl = ACL.ADMIN
     name = None
     policy = None

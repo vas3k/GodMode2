@@ -6,7 +6,7 @@ from time import time
 from common.exceptions import BadParams
 
 
-class API(object):
+class API:
     @staticmethod
     def useragent(request):
         return request.headers.get("User-Agent", "")
