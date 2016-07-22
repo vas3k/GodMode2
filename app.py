@@ -6,18 +6,18 @@ import settings
 from godmode import logging
 from godmode.app import create_app
 from models.index import IndexAdminModel
-from models.demo_posts import PostsAdminModel
-from models.demo_retention import RetentionAdminModel
-from models.demo_users import UsersAdminModel
+from models.vas3k_comments import CommentAdminModel
+from models.vas3k_memories import MemoryAdminModel
+from models.vas3k_stories import StoryAdminModel
 
 log = logging.getLogger(__name__)
 
 app = create_app(
     models=[
         IndexAdminModel,
-        PostsAdminModel,
-        UsersAdminModel,
-        RetentionAdminModel
+        StoryAdminModel,
+        MemoryAdminModel,
+        CommentAdminModel
     ]
 )
 
