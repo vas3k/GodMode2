@@ -20,8 +20,14 @@ class BaseCreateView(BaseView):
         if not form.validate():
             return render_template("error.html", message="Validation errors:", form_errors=form.errors)
 
+        values = {}
+        for field in form:
+            field_obj = getattr(form, field.name, None)
+            if field_obj:
+                values[field.name] = field_obj.data
+
         try:
-            self.model.create(**form.data)
+            self.model.create(**values)
         except Exception as ex:
             raise Rejected("Save error: {}".format(ex))
 

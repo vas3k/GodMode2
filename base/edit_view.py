@@ -23,7 +23,11 @@ class BaseEditView(BaseView):
         if not form.validate():
             return render_template("error.html", message="Validation errors:", form_errors=form.errors)
 
-        updates = dict(form.data)
+        updates = {}
+        for field in form:
+            field_obj = getattr(form, field.name, None)
+            if field_obj:
+                updates[field.name] = field_obj.data
 
         if "id" not in updates:
             updates["id"] = id
