@@ -1,3 +1,4 @@
+import wtforms
 from flask import render_template
 
 from base.widget import BaseWidget
@@ -5,7 +6,7 @@ from base.widget import BaseWidget
 
 class PolygonWidget(BaseWidget):
     filterable = False
-    field = None
+    field = wtforms.TextAreaField()
 
     def render_list(self, item):
         value = getattr(item, self.name, None) if item else None
@@ -17,4 +18,4 @@ class PolygonWidget(BaseWidget):
         value = getattr(item, self.name, None) if item else None
         value = str(value if value is not None else "")
         value = value.replace('"', "&quot;")
-        return render_template("widgets/polygon.html", name=self.name, value=value)
+        return render_template("widgets/polygon.html", name=self.name, value=value, form=form)

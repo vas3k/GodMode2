@@ -12,7 +12,7 @@
 </style>
 <div class="polygon-map" id="polygon-map-{{ name }}"></div>
 <textarea name="{{ name }}" class="polygon-map-results" id="polygon-map-{{ name }}-results">{{ value }}</textarea>
-<script src="https://maps.googleapis.com/maps/api/js?v=3&libraries=places"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3&libraries=places&key=AIzaSyAicgdCqN5zzZJMLSMdlgUf17tPY0eyrr8"></script>
 <script type="text/javascript">
     var map;
     var polygon;
@@ -51,7 +51,7 @@
         {% else %}
             map.setCenter(new google.maps.LatLng(50.2111912, 24.006282));
             map.setZoom(3);
-            google.maps.event.addListener(map, "click", function (event) {
+            google.maps.event.addListener(map, "click", function(event) {
                 polygon.getPath().push(event.latLng);
             });
         {% endif %}

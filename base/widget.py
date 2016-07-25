@@ -26,7 +26,7 @@ class BaseWidget:
                 # because I don't found how to handle InputRequired for BooleanField :(
                 extra_validators = [Optional()]
             else:
-                extra_validators = [Optional() if self.meta.nullable else InputRequired()]
+                extra_validators = [Optional() if self.meta.nullable or self.default is not None else InputRequired()]
 
             self.field.kwargs["validators"] = list(set(self.field.kwargs.get("validators") or []) | set(extra_validators))
 
@@ -41,8 +41,12 @@ class BaseWidget:
             if isinstance(default, TextClause):
                 default = ""
         else:
-            default = ""
+            default = None
         return default
+
+    @property
+    def nullable(self):
+        return self.meta.nullable
 
     def render_edit(self, form=None, item=None):
         if form:
