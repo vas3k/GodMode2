@@ -17,7 +17,7 @@ class BaseWidget:
         self.name = name
         self.meta = meta
         self.model = model
-        self.field = copy.copy(self.field)
+        self.field = copy.deepcopy(self.field)
         if self.field is not None:
             self.field.label = self.pretty_name
             self.field.default = self.default
@@ -26,7 +26,7 @@ class BaseWidget:
                 # because I don't found how to handle InputRequired for BooleanField :(
                 extra_validators = [Optional()]
             else:
-                extra_validators = [Optional() if self.meta.nullable or self.default is not None else InputRequired()]
+                extra_validators = [Optional() if self.nullable or self.default is not None else InputRequired()]
 
             self.field.kwargs["validators"] = list(set(self.field.kwargs.get("validators") or []) | set(extra_validators))
 
