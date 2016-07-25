@@ -1,10 +1,8 @@
-import copy
 import logging
 
 import wtforms
 from flask import g, redirect, render_template
 from flask.views import MethodView
-from wtforms.validators import Optional, DataRequired
 
 import settings
 from common.acl import ACL
@@ -119,14 +117,5 @@ class BaseView(MethodView):
         fields = {}
         for column_name, column_options in self.fields_obj:
             if column_options["widget"].field is not None:
-                field = copy.copy(column_options["widget"].field)
-                field.label = column_options["widget"].pretty_name
-                field.default = column_options["widget"].default
-
-                # because it's a UnboundField now, you can't simply set the validators
-                if "validators" not in field.kwargs:
-                    field.kwargs["validators"] = []
-                field.kwargs["validators"] += [Optional() if column_options["meta"].nullable else DataRequired()]
-
-                fields[column_name] = field
+                fields[column_name] = column_options["widget"].field
         return type("dummy_form", (wtforms.Form,), fields)

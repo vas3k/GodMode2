@@ -1,7 +1,11 @@
+import copy
+
 import jinja2
 import wtforms
 from flask import render_template
 from sqlalchemy.sql.elements import TextClause
+from wtforms.fields.core import UnboundField
+from wtforms.validators import Optional, InputRequired
 
 
 class BaseWidget:
@@ -13,6 +17,18 @@ class BaseWidget:
         self.name = name
         self.meta = meta
         self.model = model
+        self.field = copy.copy(self.field)
+        if self.field is not None:
+            self.field.label = self.pretty_name
+            self.field.default = self.default
+            if isinstance(self.field, wtforms.BooleanField) \
+                    or (isinstance(self.field, UnboundField) and self.field.field_class == wtforms.BooleanField):
+                # because I don't found how to handle InputRequired for BooleanField :(
+                extra_validators = [Optional()]
+            else:
+                extra_validators = [Optional() if self.meta.nullable else InputRequired()]
+
+            self.field.kwargs["validators"] = list(set(self.field.kwargs.get("validators") or []) | set(extra_validators))
 
     @property
     def pretty_name(self):

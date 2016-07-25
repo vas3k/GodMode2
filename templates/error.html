@@ -7,7 +7,7 @@
             <ul style="margin-top: 40px;">
             {% for field, errors in form_errors.items() %}
                 {% for error in errors %}
-                    <li>{{ field }}: {{ error }}</li>
+                    <li>{{ field }}: {{ error }} ({{ request.form[field] }})</li>
                 {% endfor %}
             {% endfor %}
             </ul>

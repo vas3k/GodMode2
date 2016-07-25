@@ -1,6 +1,5 @@
 from sqlalchemy.dialects import postgresql
 from sqlalchemy.sql import sqltypes
-from wtforms.validators import Optional, DataRequired
 
 from widgets.array import ArrayWidget
 from widgets.binary import BinaryWidget

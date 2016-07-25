@@ -54,6 +54,7 @@ class BaseAdminModel:
     create_view = BaseCreateView
     details_view = BaseDetailsView
     delete_view = BaseDeleteView
+    soft_delete_view = None
 
     def __init__(self, app):
         log.info("Init model: {}".format(self.__class__.__name__))

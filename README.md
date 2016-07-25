@@ -300,9 +300,10 @@ Policies are written in a very bad and unoptimized way, so they really need a hu
 
 ## Future Plans
 
-* Buy more beer
+* ~~Buy more beer~~
 * Fix HTML/CSS bugs
-* Support default values from database
+* Make Widgets Great Again (+sexy appearance)
+* Support default values from more databases
 * Rewrite policies
 * Security test for XSS and injections (be careful with that, check all models you create and send me pull requests)
 * Think about better filtering/sorting interface

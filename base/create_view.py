@@ -23,7 +23,7 @@ class BaseCreateView(BaseView):
         values = {}
         for field in form:
             field_obj = getattr(form, field.name, None)
-            if field_obj:
+            if field_obj is not None:
                 values[field.name] = field_obj.data
 
         try:

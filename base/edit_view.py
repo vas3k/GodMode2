@@ -26,7 +26,7 @@ class BaseEditView(BaseView):
         updates = {}
         for field in form:
             field_obj = getattr(form, field.name, None)
-            if field_obj:
+            if field_obj is not None:
                 updates[field.name] = field_obj.data
 
         if "id" not in updates:
