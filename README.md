@@ -1,18 +1,18 @@
 # GodMode 2
 
-GodMode is a semi-automatic customizable admin interface generator that lets you add admin interface to any SQL database.
-Written in Python 3.x and Flask, with superpower of WTForms and SQLAlchemy reflections.
+GodMode is customizable semi-automatic  admin interface generator that lets you to add an admin interface to any SQL database.
+It was written in Python 3.x and Flask, with superpower of WTForms and SQLAlchemy reflections.
 
-Automatically creates CRUD pages for any table in your database with ability to customize rows and views, create filters,
+GodMode automatically creates CRUD pages for any table in your database with an ability to customize rows and views, create filters,
 batch actions and manage access policies for users and groups.
 
-Inspired by Django Admin Interface and Flask-Admin extension, but designed to be a standalone application.
-So you don't need to have you app written using Django, Flask or even in Python at all. All you need is a SQL database.
-Tested on several pet-projects and medium startups. Good for a quick start because you can make a simple CRUD using a few
-lines of code and may add additional functionality as your product grows.
+Inspired by Django Admin Interface and Flask-Admin extension, it has been designed as standalone application.
+It's not necessary to have your app written using Django, Flask or even in Python at all. All you need is SQL database.
+GodMode has been tested at several pet projects and projects of medium startups. Interface is good for a quick start since you can make a simple CRUD using just a few
+lines of code and add additional functionality with the growth of your product.
 
-Best for PostgreSQL, MySQL and SQLite. Also supports other SQLAlchemy drivers: Firebird, Microsoft SQL Server,
-Oracle and Sybase but they were not officially tested (welcome to pull-requests and issues).
+GodMode is best for PostgreSQL, MySQL and SQLite. It also supports other SQLAlchemy drivers such as Firebird, Microsoft SQL Server,
+Oracle and Sybase. They were not officially tested though, so pull-requests and issue reports are welcome.
 
 ![Screenshot](static/screenshot.png?raw=true)
 
@@ -20,9 +20,9 @@ Oracle and Sybase but they were not officially tested (welcome to pull-requests 
 
 **Demo user and password: demo/demo.**
 
-Make sure that you have a Python 3.x. Python 2.x is not supported.
+Make sure that you have Python 3.x. Python 2.x is not supported.
 
-Clone this repository, install all requirements and run app.py.
+Clone this repository, install all the requirements and run app.py.
 
 ```
 $ git clone https://github.com/vas3k/GodMode2.git
@@ -36,11 +36,11 @@ Then open your browser at [localhost:1488](http://localhost:1488), enter demo/de
 ## Quick Start
 
 For example your PostgreSQL database on `localhost` called `dbname`
-and you have the `users` table in your database that you want to manage.
+and you have the `users` table in the database you want to manage.
 So your DSN is `postgresql+psycopg2://username:password@localhost/dbname`.
-Check that you have an access to the database from your computer before the first step.
+Check if you have an access to the database from your computer before you move to the first step.
 
-**First step:** create new file in `db` directory and name it for example `my.py`.
+**First step:** create new file in `db` directory and name it `my.py`, for example.
 You can use `demo.py` as an example.
 If you're familiar with SQLAlchemy it will be easy.
 
@@ -61,7 +61,7 @@ class User(MyDatabase.TableBase):
     # you can declare your table columns here, but autoload=True will try to do it for you
 ```
 
-**Second step:** create new model file for users admin in `models` directory. For example `users.py`.
+**Second step:** create new model file for user administration in `models` directory. For example `users.py`.
 
 ```python
 from base.model import BaseAdminModel
@@ -98,7 +98,7 @@ Now run `$ python3 app.py` and open [localhost:1488](http://localhost:1488). You
 
 Great, you've just created your first simple CRUD for `users` table. Check the Usage section to learn how to configure it.
 
-Maybe one day all these steps will be automated by the one script.
+Probably, all these steps will be automated with the script one day.
 
 ## Usage
 
@@ -116,13 +116,13 @@ class FirstDatabase(BaseDatabase):
 # bind your database class with engine (call it before any table declaration!)
 FirstDatabase.bind()
 
-# you even can have multiple databases (but better to describe them in separate files)
+# you can even have multiple databases (it's better to describe them in separate files though)
 class SecondDatabase(BaseDatabase):
     dsn = "postgresql+psycopg2://username:password@postgres.example.com/dbname"
 
 SecondDatabase.bind()
 
-# describe couple of tables
+# describe a couple of tables
 class User(FirstDatabase.TableBase):
     __table__ = sa.Table('users', FirstDatabase.metadata, autoload=True)
 
@@ -134,7 +134,7 @@ class Post(FirstDatabase.TableBase):
     user = relationship('User')
 ```
 
-Now tell GodMode about all your databases by editing `app.py`.
+Now, tell GodMode about all your databases by editing `app.py`.
 
 ```python
 app = GodModeApp(
@@ -193,7 +193,7 @@ class YourAdminModel(BaseAdminModel):
     details_view = CustomDetailsView        # see Views section for more info
 ```
 
-Now return to the `app.py` file to specify new models for your app.
+Now return to `app.py` file to specify new models for your app.
 
 
 ```python
@@ -210,8 +210,8 @@ class MyListView(BaseListView):
     acl = ACL.MODERATOR                     # lowest ACL group who has access to this view
     title = "My List"                       # title for HTML
     template = "list.html"                  # you can specify your template for this view
-    fields = [...]                          # like "fields" in model, but specific for this view
-    sorting = ["id", "name"]                # fields which allowed to sorting (default = None — all fields)
+    fields = [...]                          # same to "fields" in model, but specific for this view
+    sorting = ["id", "name"]                # fields allowed for sorting (default = None — all fields)
     batch_actions = [MyBatchAction]         # see screenshot above
     object_actions = [MyObjectAction]
     max_per_page = 100
@@ -235,7 +235,7 @@ class MyAction(BaseAction):
     def render_form(self, *args, **kwargs):
         return render_template("actions/button_action.html", url=self.name, button_label="Submit")
 
-    # some code then action is executed, kwargs have all request parameters
+    # some code, triggered with action; kwargs have all request parameters
     # but all you usually need is kwargs["id"]
     def do_item_action(self, *args, **kwargs):
         user_id = kwargs.pop("id")
@@ -245,11 +245,11 @@ class MyAction(BaseAction):
 
 ### Widgets
 
-Widgets are using great [WTForms](https://github.com/wtforms/wtforms) library for form parsing, validation and rendering. 
-But they are responsible for rendering in all views — create, list, details, delete. 
-If you're familiar with WTForms, you have all the superpowers in your hand. Otherwise check it's documentation. 
+Widgets use great [WTForms](https://github.com/wtforms/wtforms) library for form parsing, validation and rendering. 
+They are responsible for rendering in all views — create, list, details, delete. 
+If you're familiar with WTForms, you have all the superpowers in your hand. Otherwise, check the documentation. 
 
-However you can create widgets that are completely independent from WTForms. Check `widgets/polygon.py` for example.
+You can also create widgets which are completely independent from WTForms. Check `widgets/polygon.py` for example.
 
 ```python
 class MyWidget(BaseWidget):
@@ -274,29 +274,29 @@ class MyWidget(BaseWidget):
 
 ### Groups
 
-Groups allows you to combine models into logical sets in sidebar.
-Models without group have a higher priority and displayed at the top of sidebar.
+Groups allow you to combine models into logical sets in sidebar.
+Models without group have higher priority and displayed at the top of sidebar.
 
 ```python
 class MyGroup(BaseGroup):
-    acl = ACL.MODERATOR   # you can hide whole group from users lower than MODERATOR level
+    acl = ACL.MODERATOR   # you can hide the whole group from users lower than MODERATOR level
     name = "Group name"   # title to display in sidebar
     index = 1000          # higher index -> higher position
 ```
 
-### ACL's and policies
+### ACLs and policies
 
-ACL's and their priorities are defined in `common/acl.py` file: `PRIORITY = [SUPERUSER, ADMIN, MODERATOR, ALL]`.
+ACLs and their priorities are defined in `common/acl.py` file: `PRIORITY = [SUPERUSER, ADMIN, MODERATOR, ALL]`.
 You can create any group for yourself but don't forget to put it into PRIORITY list.
 
-* SUPERUSER is a group of users with the highest privileges. They have permission to do everything in GodMode. 
+* SUPERUSER is a group of users with highest privileges. They have permission to do everything in GodMode. 
 Use carefully. Usually 1 superuser per project is enough.
-* ADMIN's have all permissions to edit all databases but can't create and manage other GodMode users.
-* MODERATOR's are read-only users by default. You're able to hide some models, views, groups and actions from moderators.
-* ALL specifies that module is public even for unauthorized users. Made for login screen, don't know why they can be useful for you.
+* ADMINs have all permissions to edit the databases but they cannot create and manage other GodMode users.
+* MODERATORs are read-only users by default. You can hide any models, views, groups and actions from moderators.
+* ALL specifies that module is visible even for unauthorized users. It was made for login screen — don't know how it can be useful for you.
 
-Policies are written in a very bad and unoptimized way, so they really need a huge refactoring.
-**Don't use it for now.**
+Policies are written in a bad and unoptimized way, so large refactoring is needed.
+**Do not use it for now.**
 
 ## Future Plans
 
@@ -305,14 +305,14 @@ Policies are written in a very bad and unoptimized way, so they really need a hu
 * Make Widgets Great Again (+sexy appearance)
 * Support default values from more databases
 * Rewrite policies
-* Security test for XSS and injections (be careful with that, check all models you create and send me pull requests)
+* Security test for XSS and injections (be careful with that; check all the models you create and send me pull requests)
 * Think about better filtering/sorting interface
 * Make an install~~.php~~ file for easier cold start
-* Maybe more AJAX for validation and inline editing
+* More AJAX for validation and inline editing, probably
 
 ## Similar Projects
 
-Other great projects for automatic admin interfaces:
+Other great projects of automatic admin interfaces:
 
 * [Django Admin Module (Python)](https://docs.djangoproject.com/en/dev/ref/contrib/admin/)
 * [Flask-Admin (Python)](https://github.com/flask-admin/flask-admin)
