@@ -1,17 +1,17 @@
 # GodMode 2
 
-GodMode is customizable semi-automatic  admin interface generator that lets you to add an admin interface to any SQL database.
-It was written in Python 3.x and Flask, with superpower of WTForms and SQLAlchemy reflections.
+GodMode is customizable semi-automatic admin interface generator that lets you add an admin interface to any SQL database.
+It is written in Python 3.x and Flask, with superpower of WTForms and SQLAlchemy reflections.
 
-GodMode automatically creates CRUD pages for any table in your database with an ability to customize rows and views, create filters,
-batch actions and manage access policies for users and groups.
+GodMode automatically creates CRUD pages for any table in your database, with an ability to customize rows and views, create filters,
+batch actions and to manage access policies for users and groups.
 
-Inspired by Django Admin Interface and Flask-Admin extension, it has been designed as standalone application.
-It's not necessary to have your app written using Django, Flask or even in Python at all. All you need is SQL database.
-GodMode has been tested at several pet projects and projects of medium startups. Interface is good for a quick start since you can make a simple CRUD using just a few
-lines of code and add additional functionality with the growth of your product.
+Inspired by Django Admin Interface and Flask-Admin extension, it has been designed as a standalone application.
+It's not necessary to have your app written using Django, Flask or even in Python at all. All you need is a SQL database.
+GodMode has been tested on several pet projects and projects of medium startups. The interface is good for a quick start since you can make a simple CRUD using just a few
+lines of code and add additional functionality with growth of your product.
 
-GodMode is best for PostgreSQL, MySQL and SQLite. It also supports other SQLAlchemy drivers such as Firebird, Microsoft SQL Server,
+GodMode is more suitable for PostgreSQL, MySQL and SQLite. It also supports other SQLAlchemy drivers such as Firebird, Microsoft SQL Server,
 Oracle and Sybase. They were not officially tested though, so pull-requests and issue reports are welcome.
 
 ![Screenshot](static/screenshot.png?raw=true)
@@ -31,14 +31,14 @@ $ sudo pip3 install -r requirements.txt
 $ python3 app.py
 ```
 
-Then open your browser at [localhost:1488](http://localhost:1488), enter demo/demo to access demo version of the main screen.
+Then open your browser at [localhost:1488](http://localhost:1488), enter demo/demo to access the demo version of the main screen.
 
 ## Quick Start
 
-For example your PostgreSQL database on `localhost` called `dbname`
+For example, your PostgreSQL database on `localhost` is called `dbname`
 and you have the `users` table in the database you want to manage.
-So your DSN is `postgresql+psycopg2://username:password@localhost/dbname`.
-Check if you have an access to the database from your computer before you move to the first step.
+Then your DSN is `postgresql+psycopg2://username:password@localhost/dbname`.
+Check if you have access to the database from your computer before you move to the first step.
 
 **First step:** create new file in `db` directory and name it `my.py`, for example.
 You can use `demo.py` as an example.
@@ -98,7 +98,7 @@ Now run `$ python3 app.py` and open [localhost:1488](http://localhost:1488). You
 
 Great, you've just created your first simple CRUD for `users` table. Check the Usage section to learn how to configure it.
 
-Probably, all these steps will be automated with the script one day.
+Probably, all of these steps will be automated with a script one day.
 
 ## Usage
 
@@ -175,7 +175,7 @@ class YourAdminModel(BaseAdminModel):
         "my_custom_field_that_not_in_database": MyCustomWidget
     }
 
-    # use BaseListView for display this table (default behaviour)
+    # use BaseListView to display this table (default behaviour)
     list_view = BaseListView
 
     # do not generate create, edit and delete views,
@@ -210,7 +210,7 @@ class MyListView(BaseListView):
     acl = ACL.MODERATOR                     # lowest ACL group who has access to this view
     title = "My List"                       # title for HTML
     template = "list.html"                  # you can specify your template for this view
-    fields = [...]                          # same to "fields" in model, but specific for this view
+    fields = [...]                          # same as "fields" in model, but specific for this view
     sorting = ["id", "name"]                # fields allowed for sorting (default = None — all fields)
     batch_actions = [MyBatchAction]         # see screenshot above
     object_actions = [MyObjectAction]
@@ -245,9 +245,9 @@ class MyAction(BaseAction):
 
 ### Widgets
 
-Widgets use great [WTForms](https://github.com/wtforms/wtforms) library for form parsing, validation and rendering. 
-They are responsible for rendering in all views — create, list, details, delete. 
-If you're familiar with WTForms, you have all the superpowers in your hand. Otherwise, check the documentation. 
+Widgets are powered by a great [WTForms](https://github.com/wtforms/wtforms) library for form parsing, validation and rendering.
+They are responsible for rendering in all the views — create, list, details, delete.
+If you're familiar with WTForms, you have all the superpowers in your hands. Otherwise, check the documentation.
 
 You can also create widgets which are completely independent from WTForms. Check `widgets/polygon.py` for example.
 
@@ -259,7 +259,7 @@ class MyWidget(BaseWidget):
 
     # how to render this field in EditView
     def render_edit(self, form=None, item=None):
-        # default implementation with WTForm rendering, but can be overrided
+        # default implementation with WTForm rendering, but it can be overridden
         pass
 
     # how to render this field in ListView
@@ -274,8 +274,8 @@ class MyWidget(BaseWidget):
 
 ### Groups
 
-Groups allow you to combine models into logical sets in sidebar.
-Models without group have higher priority and displayed at the top of sidebar.
+Groups allow you to combine models into logical sets in the sidebar.
+Models without a group have higher priority and displayed at the top of the sidebar.
 
 ```python
 class MyGroup(BaseGroup):
@@ -291,7 +291,7 @@ You can create any group for yourself but don't forget to put it into PRIORITY l
 
 * SUPERUSER is a group of users with highest privileges. They have permission to do everything in GodMode. 
 Use carefully. Usually 1 superuser per project is enough.
-* ADMINs have all permissions to edit the databases but they cannot create and manage other GodMode users.
+* ADMINs have all the permissions to edit the databases but they cannot create and manage other GodMode users.
 * MODERATORs are read-only users by default. You can hide any models, views, groups and actions from moderators.
 * ALL specifies that module is visible even for unauthorized users. It was made for login screen — don't know how it can be useful for you.
 
