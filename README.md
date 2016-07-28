@@ -301,11 +301,11 @@ Policies are written in a bad and unoptimized way, so large refactoring is neede
 ## Future Plans
 
 * ~~Buy more beer~~
-* Fix HTML/CSS bugs
+* Fix HTML/CSS bugs (maybe make a redesign)
 * Make Widgets Great Again (+sexy appearance)
-* Support default values from more databases
+* Support default values from more database drivers
 * Rewrite policies
-* Security test for XSS and injections (be careful with that; check all the models you create and send me pull requests)
+* Security test for XSS and SQL injections (be careful with that; check all the models you create and send me pull requests)
 * Think about better filtering/sorting interface
 * Make an install~~.php~~ file for easier cold start
 * More AJAX for validation and inline editing, probably
