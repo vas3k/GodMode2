@@ -41,7 +41,8 @@ class StoryAdminModel(BaseAdminModel):
     widgets = {
         "image": ImageWidget,
         "title": TitleWidget,
-        "text": LongTextWidget
+        "text": LongTextWidget,
+        "html": LongTextWidget
     }
 
     class StoryListView(BaseListView):
