@@ -12,6 +12,11 @@ class Vas3kDatabase(BaseDatabase):
 Vas3kDatabase.bind()
 
 
+class Clickers(Vas3kDatabase.TableBase):
+    __table__ = sa.Table('clickers', Vas3kDatabase.metadata, autoload=True)
+    story = relationship('Story')
+
+
 class Comment(Vas3kDatabase.TableBase):
     __table__ = sa.Table('comments', Vas3kDatabase.metadata, autoload=True)
     story = relationship('Story')
