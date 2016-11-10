@@ -1,5 +1,5 @@
 {% extends "blank_layout.html" %}
 
 {% block content %}
-    <div class="success">{{ message }}</div>
+    <div class="success">{{ message | safe }}</div>
 {% endblock %}
