@@ -2,7 +2,7 @@ import sqlalchemy as sa
 from sqlalchemy.orm import relationship
 
 from base.db import BaseDatabase
-from local_settings import CONNECTION_STRING
+from settings import CONNECTION_STRING
 
 
 class Vas3kDatabase(BaseDatabase):

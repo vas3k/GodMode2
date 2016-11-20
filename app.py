@@ -7,6 +7,7 @@ from godmode import logging
 from godmode.app import create_app
 from models.index import IndexAdminModel
 from models.vas3k_365 import The365AdminModel
+from models.vas3k_announce import AnnounceAdminModel
 from models.vas3k_clickers import ClickersAdminModel
 from models.vas3k_comments import CommentAdminModel
 from models.vas3k_memories import MemoryAdminModel
@@ -21,7 +22,8 @@ app = create_app(
         MemoryAdminModel,
         CommentAdminModel,
         ClickersAdminModel,
-        The365AdminModel
+        The365AdminModel,
+        AnnounceAdminModel
     ]
 )
 

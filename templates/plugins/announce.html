@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <form action="." method="post" enctype="multipart/form-data">
+        Описание: <textarea name="text"></textarea><br>
+        Линк: <input type="url" name="url"><br>
+        <input type="submit" value="Запостить">
+    </form>
+{% endblock %}

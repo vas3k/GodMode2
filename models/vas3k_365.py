@@ -1,4 +1,3 @@
-import io
 from datetime import datetime
 
 import requests
@@ -6,6 +5,7 @@ from flask import render_template, request
 
 from base.model import BaseAdminModel
 from base.view import BaseView
+from common.telebot import post_new_story
 from db.vas3kru import Vas3kDatabase, Story
 
 
@@ -56,6 +56,8 @@ class The365AdminModel(BaseAdminModel):
                 is_featured=False,
                 is_sexy_title=False
             )
+
+            post_new_story(text="365 project: фотка каждый день", url="http://vas3k.ru/365/{}/".format(today_date))
 
             return render_template("success.html", message="Saved: <a href='http://vas3k.ru/365/{today}/'>http://vas3k.ru/365/{today}/</a>".format(today=today_date))
 
