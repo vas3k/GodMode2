@@ -9,13 +9,13 @@ from db.vas3kru import Vas3kDatabase, Story
 class AnnounceAdminModel(BaseAdminModel):
     db = Vas3kDatabase
     table = Story
-    name = "Анонс"
+    name = "announce"
     title = "announce"
     place = "navbar"
 
     class IndexView(BaseView):
         url = "/"
-        title = "announce"
+        title = "Анонс"
         template = "plugins/announce.html"
 
         def get(self):
