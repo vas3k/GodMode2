@@ -82,6 +82,7 @@ class The365AdminModel(BaseAdminModel):
 
             for story, comments in group_comments.items():
                 telegram_text += "\n\nКомментарии к «{}»:".format(story.title)
+                telegram_text += "\nhttp://vas3k.ru/{}/{}/".format(story.type, story.slug)
                 for comment in comments:
                     telegram_text += "\n"
                     telegram_text += self.make_comment_text(comment)
@@ -93,20 +94,6 @@ class The365AdminModel(BaseAdminModel):
         def make_comment_text(self, comment):
             text = Markup(comment.text).striptags()
             text = re.sub(r'^https?:\/\/.*[\r\n]*', '[URL]', text, flags=re.MULTILINE)
-            if comment.block:
-                link = "http://vas3k.ru/{type}/{slug}/#block-{block}-{id}".format(
-                    type=comment.story.type,
-                    slug=comment.story.slug,
-                    block=comment.block,
-                    id=comment.id
-                )
-            else:
-                link = "http://vas3k.ru/{type}/{slug}/#comment{id}".format(
-                    type=comment.story.type,
-                    slug=comment.story.slug,
-                    id=comment.id
-                )
-
-            return " {}: {} {}".format(comment.author, text, link)
+            return " {}: {}".format(comment.author, text)
 
     list_view = IndexView
