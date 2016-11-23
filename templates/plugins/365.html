@@ -1,8 +1,31 @@
 {% extends "layout.html" %}
 
 {% block body %}
-    <form action="." method="post" enctype="multipart/form-data">
-        <input type="file" name="photo">
+    <style>
+        .simpleform {
+            display: block;
+            margin: 20px;
+        }
+
+        .simpleform label {
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .simpleform span {
+            display: inline-block;
+            width: 80px;
+        }
+
+        .simpleform input[type=file],
+        .simpleform textarea {
+            width: 300px;
+        }
+    </style>
+
+    <form action="." method="post" enctype="multipart/form-data" class="simpleform">
+        <label><span>Фото:</span><input type="file" name="photo"></label>
+        <label><span>Вводная:</span><textarea name="text"></textarea></label>
         <input type="submit" value="Запостить">
     </form>
 {% endblock %}
