@@ -81,8 +81,7 @@ class The365AdminModel(BaseAdminModel):
                 group_comments[comment.story].append(comment)
 
             for story, comments in group_comments.items():
-                telegram_text += "\n\nКомментарии к «{}»:".format(story.title)
-                telegram_text += "\nhttp://vas3k.ru/{}/{}/".format(story.type, story.slug)
+                telegram_text += "\n\nКомментарии к «{}» http://vas3k.ru/{}/{}/ :".format(story.title, story.type, story.slug)
                 for comment in comments:
                     telegram_text += "\n"
                     telegram_text += self.make_comment_text(comment)
