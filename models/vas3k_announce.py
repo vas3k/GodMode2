@@ -24,7 +24,7 @@ class AnnounceAdminModel(BaseAdminModel):
         def post(self):
             text = request.form["text"]
             url = request.form["url"]
-            post_new_story(text=text, url=url)
+            post_new_story(text="{}\n{}".format(text or "", url or ""))
             return render_template("success.html", message="Posted! {} {}".format(text, url))
 
     list_view = IndexView
