@@ -79,7 +79,7 @@ class The365AdminModel(BaseAdminModel):
                 order_by(Comment.block)
 
             if daily_comments:
-                telegram_text = "\nА еще сегодня:"
+                telegram_text += "\nА еще сегодня:"
                 group_comments = defaultdict(list)
 
                 for comment in daily_comments:
