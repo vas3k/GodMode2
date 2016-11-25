@@ -11,6 +11,9 @@ from common.telebot import post_new_story
 from db.vas3kru import Vas3kDatabase, Story, Comment
 
 
+DEFAULT_ANNOUNCE_TEXT = "В эфире программа «дратути». Коротко за сегодня:"
+
+
 class The365AdminModel(BaseAdminModel):
     db = Vas3kDatabase
     table = Story
@@ -31,7 +34,7 @@ class The365AdminModel(BaseAdminModel):
             if file.filename == "":
                 return render_template("error.html", message="No file")
 
-            announce_text = request.form.get("text") or "В эфире программа «дратути». Коротко за сегодня:"
+            announce_text = request.form.get("text")
 
             saved_filename = "/tmp/365.{}".format(file.filename[file.filename.rfind(".") + 1:])
             file.save(saved_filename)
@@ -57,7 +60,7 @@ class The365AdminModel(BaseAdminModel):
                 title=today_date,
                 author="vas3k",
                 image=uploaded_filename,
-                text="",
+                text=announce_text or "",
                 created_at=datetime.now(),
                 views_count=0,
                 comments_count=0,
@@ -67,7 +70,7 @@ class The365AdminModel(BaseAdminModel):
                 is_sexy_title=False
             )
 
-            telegram_text = "{}\n\n365 project: http://vas3k.ru/365/{}/".format(announce_text, new_story.slug)
+            telegram_text = "{}\n\nФотка дня: http://vas3k.ru/365/{}/\n".format(announce_text or DEFAULT_ANNOUNCE_TEXT, new_story.slug)
 
             daily_comments = self.model.session.\
                 query(Comment).\
@@ -75,16 +78,18 @@ class The365AdminModel(BaseAdminModel):
                 filter(Comment.created_at > previous_story.created_at).\
                 order_by(Comment.block)
 
-            group_comments = defaultdict(list)
+            if daily_comments:
+                telegram_text = "\nА еще сегодня:"
+                group_comments = defaultdict(list)
 
-            for comment in daily_comments:
-                group_comments[comment.story].append(comment)
+                for comment in daily_comments:
+                    group_comments[comment.story].append(comment)
 
-            for story, comments in group_comments.items():
-                telegram_text += "\n\nКомментарии к «{}» http://vas3k.ru/{}/{}/ :".format(story.title, story.type, story.slug)
-                for comment in comments:
-                    telegram_text += "\n"
-                    telegram_text += self.make_comment_text(comment)
+                for story, comments in group_comments.items():
+                    telegram_text += "\n{} к посту «{}» http://vas3k.ru/{}/{}/".format(self.pluralize_comments(len(comments)), story.title, story.type, story.slug)
+                    # for comment in comments:
+                    #     telegram_text += "\n"
+                    #     telegram_text += self.make_comment_text(comment)
 
             post_new_story(text=telegram_text, with_chat=False)
 
@@ -94,5 +99,18 @@ class The365AdminModel(BaseAdminModel):
             text = Markup(comment.text).striptags()
             text = re.sub(r'^https?:\/\/.*[\r\n]*', '[URL]', text, flags=re.MULTILINE)
             return " {}: {}".format(comment.author, text)
+
+        def pluralize_comments(self, value):
+            args = ["{} новый комментарий", "{} новых комментария", "{} новых комментариев"]
+            number = abs(int(value))
+            a = number % 10
+            b = number % 100
+
+            if (a == 1) and (b != 11):
+                return args[0].format(value)
+            elif (a >= 2) and (a <= 4) and ((b < 10) or (b >= 20)):
+                return args[1].format(value)
+            else:
+                return args[2].format(value)
 
     list_view = IndexView
