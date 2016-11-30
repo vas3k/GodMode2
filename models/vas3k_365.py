@@ -35,6 +35,7 @@ class The365AdminModel(BaseAdminModel):
                 return render_template("error.html", message="No file")
 
             announce_text = request.form.get("text")
+            post_to_telegram = request.form.get("post_to_telegram") or False
 
             saved_filename = "/tmp/365.{}".format(file.filename[file.filename.rfind(".") + 1:])
             file.save(saved_filename)
@@ -70,28 +71,31 @@ class The365AdminModel(BaseAdminModel):
                 is_sexy_title=False
             )
 
-            telegram_text = "{}\n\nФотка дня: http://vas3k.ru/365/{}/\n".format(announce_text or DEFAULT_ANNOUNCE_TEXT, new_story.slug)
+            if post_to_telegram:
+                telegram_text = "{}\n\nФотка дня: http://vas3k.ru/365/{}/\n".format(announce_text or DEFAULT_ANNOUNCE_TEXT, new_story.slug)
 
-            daily_comments = self.model.session.\
-                query(Comment).\
-                join(Story, Story.id == Comment.story_id).\
-                filter(Comment.created_at > previous_story.created_at).\
-                order_by(Comment.block)
+                daily_comments = list(
+                    self.model.session.
+                    query(Comment).
+                    join(Story, Story.id == Comment.story_id).
+                    filter(Comment.created_at > previous_story.created_at).
+                    order_by(Comment.block)
+                )
 
-            if daily_comments:
-                telegram_text += "\nА еще сегодня:"
-                group_comments = defaultdict(list)
+                if len(daily_comments) > 0:
+                    telegram_text += "\nА еще сегодня:"
+                    group_comments = defaultdict(list)
 
-                for comment in daily_comments:
-                    group_comments[comment.story].append(comment)
+                    for comment in daily_comments:
+                        group_comments[comment.story].append(comment)
 
-                for story, comments in group_comments.items():
-                    telegram_text += "\n{} к посту «{}» http://vas3k.ru/{}/{}/".format(self.pluralize_comments(len(comments)), story.title, story.type, story.slug)
-                    # for comment in comments:
-                    #     telegram_text += "\n"
-                    #     telegram_text += self.make_comment_text(comment)
+                    for story, comments in group_comments.items():
+                        telegram_text += "\n{} к посту «{}» http://vas3k.ru/{}/{}/".format(self.pluralize_comments(len(comments)), story.title, story.type, story.slug)
+                        # for comment in comments:
+                        #     telegram_text += "\n"
+                        #     telegram_text += self.make_comment_text(comment)
 
-            post_new_story(text=telegram_text, with_chat=False)
+                post_new_story(text=telegram_text, with_chat=False)
 
             return render_template("success.html", message="Saved: <a href='http://vas3k.ru/365/{today}/'>http://vas3k.ru/365/{today}/</a>".format(today=today_date))
 
