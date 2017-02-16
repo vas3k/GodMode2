@@ -24,7 +24,9 @@ class AnnounceAdminModel(BaseAdminModel):
         def post(self):
             text = request.form["text"]
             url = request.form["url"]
-            post_new_story(text="{}\n{}".format(text or "", url or ""))
+            post_to_channel = request.form.get("post_to_channel") or False
+            post_to_chat = request.form.get("post_to_chat") or False
+            post_new_story(text="{}\n{}".format(text or "", url or ""), to_channel=post_to_channel, to_chat=post_to_chat)
             return render_template("success.html", message="Posted! {} {}".format(text, url))
 
     list_view = IndexView

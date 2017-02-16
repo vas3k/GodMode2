@@ -26,6 +26,8 @@
     <form action="." method="post" enctype="multipart/form-data" class="simpleform">
         <label><span>Линк:</span><input type="url" name="url"></label>
         <label><span>Описание:</span><textarea name="text"></textarea></label>
+        <label><input name="post_to_channel" value="1" type="checkbox" checked>&nbsp;запостить в Вастрик.Пынь</label>
+        <label><input name="post_to_chat" value="1" type="checkbox" checked>&nbsp;запостить в Вастрик.Чат</label>
         <input type="submit" value="Запостить">
     </form>
 {% endblock %}
