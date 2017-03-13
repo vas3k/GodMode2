@@ -18,8 +18,9 @@ class WidgetFactory:
         sqltypes.Integer: IntegerWidget,
         sqltypes.Boolean: BooleanWidget,
         sqltypes.LargeBinary: BinaryWidget,
-        postgresql.json.JSON: JSONWidget,
-        postgresql.base.ARRAY: ArrayWidget,
+        postgresql.JSON: JSONWidget,
+        postgresql.JSONB: JSONWidget,
+        postgresql.ARRAY: ArrayWidget,
         sqltypes.NullType: TextWidget
     }
 
