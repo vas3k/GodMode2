@@ -33,3 +33,5 @@ class CommentAdminModel(BaseAdminModel):
         ]
 
     list_view = CommentListView
+
+    details_view = None
