@@ -28,8 +28,8 @@ class CommentAdminModel(BaseAdminModel):
     }
 
     class CommentListView(BaseListView):
-        list_columns = [
-            "id", "avatar", "author", "text", "ip", "is_visible"
+        fields = [
+            "id", "avatar", "author", "text", "ip", "rating", "is_visible"
         ]
 
     list_view = CommentListView
