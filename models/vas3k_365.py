@@ -34,6 +34,7 @@ class The365AdminModel(BaseAdminModel):
             if file.filename == "":
                 return render_template("error.html", message="No file")
 
+            title = request.form.get("title")
             announce_text = request.form.get("text")
             post_to_channel = request.form.get("post_to_channel") or False
             post_to_chat = request.form.get("post_to_chat") or False
@@ -50,10 +51,13 @@ class The365AdminModel(BaseAdminModel):
 
             today_date = datetime.now().strftime("%Y-%m-%d")
 
+            if not title:
+                title = today_date
+
             new_story = self.model.create(
                 slug=today_date,
                 type="365",
-                title=today_date,
+                title=title,
                 author="vas3k",
                 image=uploaded_filename,
                 text=announce_text or "",
