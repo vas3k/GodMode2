@@ -14,19 +14,20 @@
 
         .simpleform span {
             display: inline-block;
-            width: 80px;
+            width: 100px;
         }
 
         .simpleform input[type=file],
+        .simpleform input[type=text],
         .simpleform textarea {
-            width: 300px;
+            width: 320px;
         }
     </style>
 
     <form action="." method="post" enctype="multipart/form-data" class="simpleform">
         <label><span>Фото:</span><input type="file" name="photo"></label>
-        <label><span>Заголовок:</span><input type="text" name="title"></label>
-        <label><span>Вводная:</span><textarea name="text" style="width: 300px; height: 500px;"></textarea></label>
+        <label><span>Заголовок:</span><input type="text" name="title" style="width: 320px;"></label>
+        <label><span>Вводная:</span><textarea name="text" style="width: 320px; height: 500px;"></textarea></label>
         <label><input name="post_to_chat" value="1" type="checkbox" checked>&nbsp;запостить в Вастрик.Чат</label>
         <label><input name="post_to_channel" value="1" type="checkbox">&nbsp;запостить в Вастрик.Пынь</label>
         <input type="submit" value="Запостить">
