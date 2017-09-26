@@ -47,7 +47,7 @@ class The365AdminModel(BaseAdminModel):
                 files={"image": open(saved_filename, "rb")}
             )
 
-            uploaded_filename = response.json()["url"]
+            uploaded_filename = response.json()["uploaded"][0]
 
             today_date = datetime.now().strftime("%Y-%m-%d")
 
