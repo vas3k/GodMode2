@@ -13,9 +13,9 @@ def post_new_365(text, to_chat=True, to_channel=True):
         bot.send_message(chat_id=TELEGRAM_CHANNEL_ID, text=text, disable_web_page_preview=True, disable_notification=True)
 
 
-def post_picture(image_url, to_chat=True, to_channel=True):
+def post_picture(image, to_chat=True, to_channel=True):
     if to_chat:
-        bot.send_photo(chat_id=TELEGRAM_CHAT_ID, photo=image_url, disable_notification=True)
+        bot.send_photo(chat_id=TELEGRAM_CHAT_ID, photo=image, disable_notification=True)
 
     if to_channel:
-        bot.send_message(chat_id=TELEGRAM_CHANNEL_ID, photo=image_url, disable_notification=True)
+        bot.send_message(chat_id=TELEGRAM_CHANNEL_ID, photo=image, disable_notification=True)
