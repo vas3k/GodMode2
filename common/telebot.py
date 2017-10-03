@@ -18,4 +18,4 @@ def post_picture(image, to_chat=True, to_channel=True):
         bot.send_photo(chat_id=TELEGRAM_CHAT_ID, photo=image, disable_notification=True)
 
     if to_channel:
-        bot.send_message(chat_id=TELEGRAM_CHANNEL_ID, photo=image, disable_notification=True)
+        bot.send_photo(chat_id=TELEGRAM_CHANNEL_ID, photo=image, disable_notification=True)
