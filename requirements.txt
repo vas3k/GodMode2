@@ -7,4 +7,4 @@ Jinja2==2.10.1
 WTForms==2.2.1
 werkzeug==0.15.2
 pylint==2.3.1
-python-telegram-bot==5.2.0
+python-telegram-bot==8.0

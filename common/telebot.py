@@ -5,9 +5,17 @@ from settings import TELEGRAM_TOKEN, TELEGRAM_CHAT_ID, TELEGRAM_CHANNEL_ID
 bot = telegram.Bot(token=TELEGRAM_TOKEN)
 
 
-def post_new_story(text, to_chat=True, to_channel=True):
+def post_new_365(text, to_chat=True, to_channel=True):
     if to_chat:
-        bot.sendMessage(chat_id=TELEGRAM_CHAT_ID, text=text, disable_web_page_preview=False)
+        bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=text, disable_web_page_preview=True, disable_notification=True)
 
     if to_channel:
-        bot.sendMessage(chat_id=TELEGRAM_CHANNEL_ID, text=text, disable_web_page_preview=False)
+        bot.send_message(chat_id=TELEGRAM_CHANNEL_ID, text=text, disable_web_page_preview=True, disable_notification=True)
+
+
+def post_picture(image_url, to_chat=True, to_channel=True):
+    if to_chat:
+        bot.send_photo(chat_id=TELEGRAM_CHAT_ID, photo=image_url, disable_notification=True)
+
+    if to_channel:
+        bot.send_message(chat_id=TELEGRAM_CHANNEL_ID, photo=image_url, disable_notification=True)

@@ -7,7 +7,7 @@ from flask import render_template, request, Markup
 
 from base.model import BaseAdminModel
 from base.view import BaseView
-from common.telebot import post_new_story
+from common.telebot import post_new_365, post_picture
 from db.vas3kru import Vas3kDatabase, Story, Comment
 
 
@@ -72,7 +72,8 @@ class The365AdminModel(BaseAdminModel):
 
             if post_to_channel or post_to_chat:
                 telegram_text = "{}\nhttp://vas3k.ru/365/{}/\n".format(announce_text or DEFAULT_ANNOUNCE_TEXT, new_story.slug)
-                post_new_story(text=telegram_text, to_chat=post_to_chat, to_channel=post_to_channel)
+                post_picture(image_url=uploaded_filename, to_chat=post_to_chat, to_channel=post_to_channel)
+                post_new_365(text=telegram_text, to_chat=post_to_chat, to_channel=post_to_channel)
 
             return render_template("success.html", message="Saved: <a href='http://vas3k.ru/365/{today}/'>http://vas3k.ru/365/{today}/</a>".format(today=today_date))
 
