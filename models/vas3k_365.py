@@ -36,7 +36,7 @@ class The365AdminModel(BaseAdminModel):
 
             title = request.form.get("title")
             announce_text = request.form.get("text")
-            telegram_text = request.form.get("telegram_text")
+            telegram_text = request.form.get("telegram_text") or announce_text
             post_to_channel = request.form.get("post_to_channel") or False
             post_to_chat = request.form.get("post_to_chat") or False
 
