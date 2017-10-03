@@ -7,10 +7,10 @@ bot = telegram.Bot(token=TELEGRAM_TOKEN)
 
 def post_new_365(text, to_chat=True, to_channel=True):
     if to_chat:
-        bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=text, disable_web_page_preview=True, disable_notification=True)
+        bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=text[:2000], disable_web_page_preview=True, disable_notification=True)
 
     if to_channel:
-        bot.send_message(chat_id=TELEGRAM_CHANNEL_ID, text=text, disable_web_page_preview=True, disable_notification=True)
+        bot.send_message(chat_id=TELEGRAM_CHANNEL_ID, text=text[:2000], disable_web_page_preview=True, disable_notification=True)
 
 
 def post_picture(image, to_chat=True, to_channel=True):

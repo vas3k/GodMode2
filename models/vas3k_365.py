@@ -36,6 +36,7 @@ class The365AdminModel(BaseAdminModel):
 
             title = request.form.get("title")
             announce_text = request.form.get("text")
+            telegram_text = request.form.get("telegram_text")
             post_to_channel = request.form.get("post_to_channel") or False
             post_to_chat = request.form.get("post_to_chat") or False
 
@@ -71,7 +72,7 @@ class The365AdminModel(BaseAdminModel):
             )
 
             if post_to_channel or post_to_chat:
-                telegram_text = "{}\nhttp://vas3k.ru/365/{}/\n".format(announce_text or DEFAULT_ANNOUNCE_TEXT, new_story.slug)
+                telegram_text = "{}\nhttp://vas3k.ru/365/{}/\n".format(telegram_text, new_story.slug)
                 post_picture(image=open(saved_filename, "rb"), to_chat=post_to_chat, to_channel=post_to_channel)
                 post_new_365(text=telegram_text, to_chat=post_to_chat, to_channel=post_to_channel)
 
