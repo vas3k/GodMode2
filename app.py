@@ -8,9 +8,12 @@ from godmode.app import create_app
 from models.index import IndexAdminModel
 from models.vas3k_365 import The365AdminModel
 from models.vas3k_clickers import ClickersAdminModel
+from models.vas3k_clickers_en import ClickersENAdminModel
 from models.vas3k_comments import CommentAdminModel
+from models.vas3k_comments_en import CommentENAdminModel
 from models.vas3k_memories import MemoryAdminModel
 from models.vas3k_stories import StoryAdminModel
+from models.vas3k_stories_en import StoryENAdminModel
 
 log = logging.getLogger(__name__)
 
@@ -22,6 +25,9 @@ app = create_app(
         CommentAdminModel,
         ClickersAdminModel,
         The365AdminModel,
+        StoryENAdminModel,
+        CommentENAdminModel,
+        ClickersENAdminModel
     ]
 )
 

@@ -17,9 +17,19 @@ class Clickers(Vas3kDatabase.TableBase):
     story = relationship('Story')
 
 
+class ClickersEN(Vas3kDatabase.TableBase):
+    __table__ = sa.Table('clickers_en', Vas3kDatabase.metadata, autoload=True)
+    story = relationship('StoryEN')
+
+
 class Comment(Vas3kDatabase.TableBase):
     __table__ = sa.Table('comments', Vas3kDatabase.metadata, autoload=True)
     story = relationship('Story')
+
+
+class CommentEN(Vas3kDatabase.TableBase):
+    __table__ = sa.Table('comments_en', Vas3kDatabase.metadata, autoload=True)
+    story = relationship('StoryEN')
 
 
 class Memory(Vas3kDatabase.TableBase):
@@ -29,3 +39,7 @@ class Memory(Vas3kDatabase.TableBase):
 
 class Story(Vas3kDatabase.TableBase):
     __table__ = sa.Table('stories', Vas3kDatabase.metadata, autoload=True)
+
+
+class StoryEN(Vas3kDatabase.TableBase):
+    __table__ = sa.Table('stories_en', Vas3kDatabase.metadata, autoload=True)

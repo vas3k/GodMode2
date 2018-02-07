@@ -1,5 +1,5 @@
 from base.model import BaseAdminModel
-from db.vas3kru import Comment, Vas3kDatabase, Clickers
+from db.vas3kru import Vas3kDatabase, Clickers
 from groups.main import Vas3kGroup
 
 
@@ -11,4 +11,4 @@ class ClickersAdminModel(BaseAdminModel):
     icon = "icon-mouse"
     group = Vas3kGroup
     index = 400
-    ordering = Comment.created_at.desc()
+    ordering = Clickers.created_at.desc()
