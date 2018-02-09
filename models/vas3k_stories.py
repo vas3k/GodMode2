@@ -1,3 +1,4 @@
+from base.edit_view import BaseEditView
 from base.list_view import BaseListView
 from base.model import BaseAdminModel
 from base.widget import BaseWidget
@@ -53,12 +54,22 @@ class StoryAdminModel(BaseAdminModel):
 
     list_view = StoryListView
 
+    class StoryEditView(BaseEditView):
+        fields = [
+            "type", "slug", "author", "title", "subtitle",
+            "image", "text", "html", "data", "created_at",
+            "comments_count", "views_count", "is_visible", "is_commentable",
+            "is_featured"
+        ]
+
+    edit_view = StoryEditView
+
     details_view = None
 
     def after_update(self, old_item, new_item):
         if old_item.text != new_item.text:
             self.session.execute(
-                "update stories set text_cache = '', text_cache_rss where id = %(story_id)s",
+                "update stories set text_cache = '', text_cache_rss = '' where id = %(story_id)s",
                 {"story_id": new_item.id}
             )
             self.session.commit()
