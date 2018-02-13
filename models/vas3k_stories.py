@@ -69,7 +69,7 @@ class StoryAdminModel(BaseAdminModel):
     def after_update(self, old_item, new_item):
         if old_item.text != new_item.text:
             self.session.execute(
-                "update stories set text_cache = '', text_cache_rss = '' where id = %(story_id)s",
+                "update stories set text_cache = '', text_cache_rss = '' where id = :story_id",
                 {"story_id": new_item.id}
             )
             self.session.commit()
