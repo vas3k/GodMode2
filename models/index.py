@@ -1,3 +1,5 @@
+from sqlalchemy.exc import DataError
+
 from godmode.models.base import BaseAdminModel
 from godmode.views.view import BaseView
 from godmode.acl import ACL
@@ -18,6 +20,18 @@ class IndexAdminModel(BaseAdminModel):
         template = "index.html"
 
         def get(self):
-            return self.render()
+            session = self.model.session
+
+            try:
+                subscribers = session.execute("select count(*) as cnt from subscribers where unsubscribed_at is null")
+                subscribers = (subscribers.get("cnt") or 0) if subscribers else 0
+            except DataError:
+                subscribers = 0
+
+            context = {
+                "newsletter_subscribers": subscribers
+            }
+
+            return self.render(**context)
 
     list_view = DemoIndexView
