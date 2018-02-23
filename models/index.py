@@ -23,7 +23,7 @@ class IndexAdminModel(BaseAdminModel):
             session = self.model.session
 
             try:
-                subscribers = session.execute("select count(*) as cnt from subscribers where unsubscribed_at is null")
+                subscribers = session.execute("select count(*) as cnt from subscribers where unsubscribed_at is null").first()
                 subscribers = (subscribers.get("cnt") or 0) if subscribers else 0
             except DataError:
                 subscribers = 0
