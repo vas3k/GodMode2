@@ -13,6 +13,26 @@ class StoryENAdminModel(StoryAdminModel):
     index = 1000
     ordering = StoryEN.created_at.desc()
 
+    class StoryListView(BaseListView):
+        fields = [
+            "id", "title", "image", "type", "created_at",
+            "comments_count", "views_count", "is_visible", "is_commentable"
+        ]
+
+    list_view = StoryListView
+
+    class StoryEditView(BaseEditView):
+        fields = [
+            "type", "slug", "author", "title", "subtitle",
+            "image", "text", "html", "preview_image", "preview_text",
+            "data", "created_at", "comments_count", "views_count",
+            "is_visible", "is_commentable", "is_featured"
+        ]
+
+    edit_view = StoryEditView
+
+    details_view = None
+
     def after_update(self, old_item, new_item):
         if old_item.text != new_item.text:
             self.session.execute(
