@@ -8,7 +8,7 @@ from widgets.longtext import LongTextWidget
 class PainAdminModel(BaseAdminModel):
     db = Vas3kDatabase
     table = Pain
-    name = "comments"
+    name = "pain"
     title = "Расскажи где болит"
     icon = "icon-trolleyfull"
     group = Vas3kGroup
