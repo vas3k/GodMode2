@@ -21,7 +21,7 @@ class PainAdminModel(BaseAdminModel):
 
     class PainListView(BaseListView):
         fields = [
-            "id", "author", "created_at", "approved_at", "is_visible", "ip", "rating"
+            "id", "author", "problem", "created_at", "approved_at", "is_visible", "ip", "rating"
         ]
 
     list_view = PainListView
