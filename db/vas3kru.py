@@ -43,3 +43,7 @@ class Story(Vas3kDatabase.TableBase):
 
 class StoryEN(Vas3kDatabase.TableBase):
     __table__ = sa.Table('stories_en', Vas3kDatabase.metadata, autoload=True)
+
+
+class Pain(Vas3kDatabase.TableBase):
+    __table__ = sa.Table('pain', Vas3kDatabase.metadata, autoload=True)
