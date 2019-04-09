@@ -16,7 +16,7 @@ class PainAdminModel(BaseAdminModel):
     ordering = Pain.created_at.desc()
     widgets = {
         "problem": LongTextWidget,
-        "solution": LongTextWidget
+        "solutions": LongTextWidget
     }
 
     class PainListView(BaseListView):
