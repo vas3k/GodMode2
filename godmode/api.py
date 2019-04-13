@@ -157,7 +157,7 @@ class API:
 
         try:
             val = float(val)
-        except Exception:
+        except ValueError:
             raise BadParams(key)
 
         return val

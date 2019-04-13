@@ -4,6 +4,7 @@ from flask import g
 from sqlalchemy import text
 
 from godmode import logging
+from godmode.exceptions import ImproperlyConfigured
 from godmode.views.create_view import BaseCreateView
 from godmode.views.delete_view import BaseDeleteView
 from godmode.views.details_view import BaseDetailsView
@@ -80,7 +81,8 @@ class BaseAdminModel:
     @property
     def session(self):
         if not self.db:
-            raise Exception("No database for '{}' admin model".format(self.__class__.__name__))
+            raise ImproperlyConfigured("No database defined for '{}' admin model. "
+                                       "Please specify the 'db' parameter".format(self.__class__.__name__))
 
         return self.db.session
 

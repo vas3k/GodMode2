@@ -21,6 +21,10 @@ class GodModeException(Exception):
         return response
 
 
+class ImproperlyConfigured(GodModeException):
+    default_message = "Improperly Configured"
+
+
 class Rejected(GodModeException):
     default_message = "Rejected"
 
