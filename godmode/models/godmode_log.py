@@ -18,7 +18,7 @@ class GodModeLogAdminModel(BaseAdminModel):
     db = GodModeDatabase
     table = LogTable
     name = "godmode_log"
-    title = "Admin log"
+    title = "Audit log"
     icon = "icon-rawaccesslogs"
     group = GodModeGroup
     index = 20
