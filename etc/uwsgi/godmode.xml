@@ -1,0 +1,21 @@
+<uwsgi>
+    <plugins>python3,http</plugins>
+    <uid>godmode</uid>
+    <gid>godmode</gid>
+    <socket>/tmp/godmode.sock</socket>
+    <chmod-socket>666</chmod-socket>
+    <chdir>/home/godmode/app</chdir>
+    <pythonpath>/home/godmode/app</pythonpath>
+    <module>app</module>
+    <callable>wsgi</callable>
+    <daemonize>/home/godmode/uwsgi.log</daemonize>
+    <harakiri>30</harakiri>
+    <buffer-size>32768</buffer-size>
+    <post-buffering>8192</post-buffering>
+    <post-buffering-bufsize>65536</post-buffering-bufsize>
+    <max-requests>1000</max-requests>
+    <disable-logging/>
+    <listen>100</listen>
+    <master/>
+    <workers>4</workers>
+</uwsgi>
