@@ -18,12 +18,12 @@
                 <span style="position: absolute;">
                     {% if meta.foreign_keys %}
                         {% for fk in meta.foreign_keys %}
-                            {% set model = app.models_map["%s_%s" % (model.db.__name__, fk.column.table.name)] %}
-                            {% if model.details_view %}
-                                <a href="{{ model.url_prefix }}{{ model.name }}/{{ row[column_name] }}/details/"
+                            {% set model_ref = model_map[model_hash(model, fk.column.table.name)] %}
+                            {% if model_ref.details_view %}
+                                <a href="{{ model_ref.url_prefix }}{{ model_ref.name }}/{{ row[column_name] }}/details/"
                                    class="field-action"><i class="icon-arrow-right"></i></a>
-                            {% elif model.edit_view %}
-                                <a href="{{ model.url_prefix }}{{ model.name }}/{{ row[column_name] }}/edit/"
+                            {% elif model_ref.edit_view %}
+                                <a href="{{ model_ref.url_prefix }}{{ model_ref.name }}/{{ row[column_name] }}/edit/"
                                    class="field-action"><i class="icon-arrow-right"></i></a>
                             {% endif %}
                         {% endfor %}

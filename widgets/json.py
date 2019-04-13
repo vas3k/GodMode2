@@ -2,7 +2,7 @@ import json
 
 import wtforms
 
-from base.widget import BaseWidget
+from godmode.widgets.base import BaseWidget
 
 
 def parse_value(value):

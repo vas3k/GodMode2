@@ -1,6 +1,6 @@
 import wtforms
 
-from base.widget import BaseWidget
+from godmode.widgets.base import BaseWidget
 
 
 class FloatWidget(BaseWidget):

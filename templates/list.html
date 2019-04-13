@@ -10,7 +10,6 @@
     {% set has_edit_view_access = ACL.has_access(me, model.edit_view_obj) %}
     {% set has_details_view_access = ACL.has_access(me, model.details_view_obj) %}
     {% set has_delete_view_access = ACL.has_access(me, model.delete_view_obj) %}
-    {% set has_soft_delete_view_access = ACL.has_access(me, model.soft_delete_view_obj) %}
 
     <div class="content-header">
         <div class="content-header__title">{{ model.title }}</div>
@@ -91,12 +90,12 @@
                         {% endif %}
                     </td>
                 {% endfor %}
+
                 {% if view.object_actions %}
                     <td>&nbsp;</td>
                 {% endif %}
-                {% set show_delete = model.delete_view and has_delete_view_access and view.has_list_delete %}
-                {% set show_soft_delete = model.soft_delete_view and has_soft_delete_view_access and view.has_list_delete %}
-                {% if show_delete or show_soft_delete %}
+
+                {% if model.delete_view and has_delete_view_access and view.has_list_delete %}
                     <td>&nbsp;</td>
                 {% endif %}
             </tr>

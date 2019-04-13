@@ -1,6 +1,6 @@
 from wtforms.fields.html5 import IntegerField
 
-from base.widget import BaseWidget
+from godmode.widgets.base import BaseWidget
 
 
 class IntegerWidget(BaseWidget):

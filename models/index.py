@@ -1,10 +1,10 @@
 from flask import g
 from sqlalchemy.exc import DataError
 
-from base.model import BaseAdminModel
-from base.view import BaseView
-from common.acl import ACL
-from db.demo import DemoDatabase
+from godmode.models.base import BaseAdminModel
+from godmode.views.view import BaseView
+from godmode.acl import ACL
+from database.demo import DemoDatabase
 
 
 class IndexAdminModel(BaseAdminModel):
@@ -34,7 +34,7 @@ class IndexAdminModel(BaseAdminModel):
                 total_posts = 0
 
             context = {
-                "message": "Welcome to GodMode2, {}. You can customize this page.".format(g.user.login),
+                "message": "Welcome to GodMode, {}. You can customize this page.".format(g.user.login),
                 "total_users": total_users,
                 "total_posts": total_posts
             }

@@ -2,7 +2,7 @@ from datetime import datetime, date
 
 from wtforms.fields.html5 import DateTimeField
 
-from base.widget import BaseWidget
+from godmode.widgets.base import BaseWidget
 
 
 class DatetimeWidget(BaseWidget):

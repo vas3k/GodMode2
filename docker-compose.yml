@@ -1,0 +1,23 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - APP_PORT=1414
+      - DEBUG=true
+    ports:
+      - "1414:1414"
+    volumes:
+      - .:/app
+    restart: always
+
+#  nginx:
+#    build:
+#      context: ./etc/nginx
+#      dockerfile: Dockerfile
+#    ports:
+#     - "80:80"
+#    links:
+#     - app

@@ -1,4 +1,4 @@
-from base.widget import BaseWidget
+from godmode.widgets.base import BaseWidget
 
 
 class TextWidget(BaseWidget):

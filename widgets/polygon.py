@@ -1,7 +1,7 @@
 import wtforms
 from flask import render_template
 
-from base.widget import BaseWidget
+from godmode.widgets.base import BaseWidget
 
 
 class PolygonWidget(BaseWidget):

@@ -1,6 +1,6 @@
 import wtforms
 
-from base.widget import BaseWidget
+from godmode.widgets.base import BaseWidget
 
 
 class BooleanWidget(BaseWidget):
@@ -10,8 +10,8 @@ class BooleanWidget(BaseWidget):
         value = getattr(item, self.name, None)
         if value:
             return "<i class='icon-ok' style='color: #0c0;'></i>"
-        else:
-            return "<i class='icon-remove' style='color: #c00;'></i>"
+
+        return "<i class='icon-remove' style='color: #c00;'></i>"
 
 
 class BooleanReverseWidget(BooleanWidget):
@@ -21,5 +21,5 @@ class BooleanReverseWidget(BooleanWidget):
         value = getattr(item, self.name, None)
         if value:
             return "<i class='icon-ok' style='color: #c00;'></i>"
-        else:
-            return "<i class='icon-remove' style='color: #0c0;'></i>"
+
+        return "<i class='icon-remove' style='color: #0c0;'></i>"

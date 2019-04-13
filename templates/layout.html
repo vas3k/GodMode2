@@ -21,7 +21,7 @@
     <div class="navbar bg-dark">
         <a href="/" class="navbar-logo bg-darker">{{ settings.APP_LOGO | safe }}</a>
         <div class="navbar-buttons">
-            {% for model in app.models %}
+            {% for model in navbar_models %}
                 {% if model.place == "navbar" and ACL.has_access(me, model) %}
                     <a class="navbar-button" href="/models/{{ model.name }}/">{{ model.title }}</a>
                 {% endif %}
@@ -40,8 +40,8 @@
         <div class="one-height">
             <div class="sidebar bg-sidebar one-height__item">
                 {% block sidebar %}
-                    {% for group, models in app.models | group_models %}
-                        {% if not group or ACL.has_access(me, group) %} {# TODO: add policies to groups #}
+                    {% for group, models in sidebar_models %}
+                        {% if not group or ACL.has_access(me, group) %}
                             <div class="sidebar-group">
                                 {% if group and group.name %}
                                     <div class="sidebar-group__title">{{ group.name }}</div>
