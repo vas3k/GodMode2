@@ -10,7 +10,7 @@ from godmode.api import API
 from godmode.exceptions import ObjectNotFound, AccessDenied, AuthFailed
 from godmode.groups.godmode import GodModeGroup
 from godmode.database.godmode import LogTable
-from godmode.database.godmode import SessionsTable, UsersTable, GodModeDatabase
+from godmode.database.godmode import SessionsTable, UsersTable, godmode_database
 from widgets.list import ListWidget
 from widgets.password import PasswordWidget
 
@@ -21,7 +21,7 @@ class AclWidget(ListWidget):
 
 class GodModeUsersAdminModel(BaseAdminModel):
     acl = ACL.ADMIN
-    db = GodModeDatabase
+    db = godmode_database
     table = UsersTable
     name = "godmode_users"
     title = "Admin users"
@@ -100,7 +100,7 @@ class GodModeUsersAdminModel(BaseAdminModel):
 
     @classmethod
     def login(cls, request, login, password):
-        user = GodModeDatabase.session.\
+        user = godmode_database.session.\
             query(UsersTable).\
             filter_by(login=login).\
             first()
@@ -115,16 +115,16 @@ class GodModeUsersAdminModel(BaseAdminModel):
             user_id=user.id,
             token=API.generate_hash(user.id)
         )
-        GodModeDatabase.session.add(client)
-        GodModeDatabase.session.commit()
+        godmode_database.session.add(client)
+        godmode_database.session.commit()
 
         return user, client
 
     @classmethod
     def logout(cls, request):
         _, client = yield cls.user(request, with_client=True)
-        GodModeDatabase.session.delete(client)
-        GodModeDatabase.session.flush()
+        godmode_database.session.delete(client)
+        godmode_database.session.flush()
         return True
 
     @classmethod
@@ -132,7 +132,7 @@ class GodModeUsersAdminModel(BaseAdminModel):
         user_id = API.get_int(request, "gm_user_id")
         token = API.get_str(request, "gm_token")
 
-        client = GodModeDatabase.session.\
+        client = godmode_database.session.\
             query(SessionsTable).\
             filter_by(user_id=user_id, token=token).\
             first()
@@ -140,7 +140,7 @@ class GodModeUsersAdminModel(BaseAdminModel):
         if not client:
             raise AuthFailed("Auth failed")
 
-        user = GodModeDatabase.session.\
+        user = godmode_database.session.\
             query(UsersTable).\
             filter_by(id=client.user_id).\
             first()

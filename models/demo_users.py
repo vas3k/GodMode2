@@ -3,7 +3,7 @@ from godmode.views.list_view import BaseListView
 from godmode.models.base import BaseAdminModel
 from godmode.widgets.base import BaseWidget
 from groups.demo_group import DemoGroup
-from database.demo import User, DemoDatabase
+from database.demo import User, demo_database
 from widgets.boolean import BooleanReverseWidget
 
 
@@ -15,7 +15,7 @@ class NameWidget(BaseWidget):
 
 
 class UsersAdminModel(BaseAdminModel):
-    db = DemoDatabase
+    db = demo_database
     name = "users"
     title = "Users"
     icon = "icon-user"

@@ -5,11 +5,11 @@ from datetime import datetime, timedelta
 from godmode.models.base import BaseAdminModel
 from godmode.views.view import BaseView
 from godmode.acl import ACL
-from database.demo import DemoDatabase
+from database.demo import demo_database
 
 
 class RetentionAdminModel(BaseAdminModel):
-    db = DemoDatabase
+    db = demo_database
     name = "retention"
     title = "Retention"
     place = "navbar"

@@ -5,7 +5,7 @@ from godmode.models.base import BaseAdminModel
 from godmode.widgets.base import BaseWidget
 from godmode.acl import ACL
 from godmode.groups.godmode import GodModeGroup
-from godmode.database.godmode import LogTable, GodModeDatabase
+from godmode.database.godmode import LogTable, godmode_database
 
 
 class IdsWidget(BaseWidget):
@@ -15,7 +15,7 @@ class IdsWidget(BaseWidget):
 
 class GodModeLogAdminModel(BaseAdminModel):
     acl = ACL.ADMIN
-    db = GodModeDatabase
+    db = godmode_database
     table = LogTable
     name = "godmode_log"
     title = "Audit log"

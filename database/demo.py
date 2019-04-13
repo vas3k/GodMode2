@@ -4,14 +4,14 @@ from sqlalchemy.orm import relationship
 from godmode.database import database
 
 
-DemoDatabase = database("sqlite:///database/demo.sqlite", connect_args={"check_same_thread": False})
+demo_database = database("sqlite:///database/demo.sqlite", connect_args={"check_same_thread": False})
 
 
-class User(DemoDatabase.TableBase):
-    __table__ = sa.Table('users', DemoDatabase.metadata, autoload=True)
+class User(demo_database.TableBase):
+    __table__ = sa.Table('users', demo_database.metadata, autoload=True)
 
 
-class Post(DemoDatabase.TableBase):
-    __table__ = sa.Table('posts', DemoDatabase.metadata, autoload=True)
+class Post(demo_database.TableBase):
+    __table__ = sa.Table('posts', demo_database.metadata, autoload=True)
 
     user = relationship('User')

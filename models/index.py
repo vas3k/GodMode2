@@ -4,12 +4,12 @@ from sqlalchemy.exc import DataError
 from godmode.models.base import BaseAdminModel
 from godmode.views.view import BaseView
 from godmode.acl import ACL
-from database.demo import DemoDatabase
+from database.demo import demo_database
 
 
 class IndexAdminModel(BaseAdminModel):
     acl = ACL.ALL
-    db = DemoDatabase
+    db = demo_database
     title = "Home"
     place = None
     url_prefix = "/"

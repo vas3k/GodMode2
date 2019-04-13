@@ -1,6 +1,6 @@
 from sqlalchemy.exc import SQLAlchemyError
 
-from godmode.database.godmode import LogTable, GodModeDatabase
+from godmode.database.godmode import LogTable, godmode_database
 
 
 def audit_log(user, model, ids=None, action=None, details=None, reason=None):
@@ -15,12 +15,12 @@ def audit_log(user, model, ids=None, action=None, details=None, reason=None):
         details=str(details)[:512],
         reason=reason
     )
-    GodModeDatabase.session.add(item)
+    godmode_database.session.add(item)
 
     try:
-        GodModeDatabase.session.commit()
+        godmode_database.session.commit()
     except SQLAlchemyError:
-        GodModeDatabase.session.rollback()
+        godmode_database.session.rollback()
         raise
 
     return item

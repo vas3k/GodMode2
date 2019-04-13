@@ -4,9 +4,9 @@ GodMode is a customizable semi-automatic admin site generator for any SQL databa
 
 Inspired by [Django Admin site](https://docs.djangoproject.com/en/dev/ref/contrib/admin/) 
 and [Flask-Admin](https://flask-admin.readthedocs.io/en/latest/), it was designed to be a standalone 
-app. GodMode automatically creates CRUD pages for any table in your database with an ability to customize views, 
-create filters, implement batch actions, and manage access policies for users. 
-It uses power of Python 3, Flask, SQLAlchemy and WTForms. 
+app. GodMode automatically creates CRUD for any table in your database and gives you an ability to customize views, 
+create filters, batch actions, and manage access policies for users. 
+Under the hood it's built with power of Python 3, Flask, SQLAlchemy and WTForms. 
 
 Doesn't matter if your application is written in Django, asyncio or even in Python at all. 
 All you need is a SQL database — tested with PostgreSQL, MySQL and SQLite.
@@ -21,7 +21,7 @@ Use it at your own risk.
 
 ## Installation
 
-Using docker-compose:
+Use docker-compose:
 
 ```
 $ git clone https://github.com/vas3k/GodMode2.git
@@ -48,22 +48,19 @@ Then go to [localhost:1414](http://localhost:1414) and enter demo/demo to access
 
 Let's say you have a PostgreSQL database on `localhost` called `dbname` with a `users` table in there.
 
-**Step one:** create a new file in `db` directory. Name is up to you, I will use `my.py`.
-You need to declare database connection and a User model there. 
+**Step one:** create a new file in `db` directory. Name is up to you, I'm using `my.py`.
+Declare a database connection and a User model there. 
 Use `db/demo.py` file as an example.
 
 ```python
 import sqlalchemy as sa
 from godmode.database import database
 
-
-# connect to database using a connection string
-DemoDatabase = database("sqlite:///database/demo.sqlite")
+demo_database = database("sqlite:///database/demo.sqlite")
 
 
-# refer to a table you want to use
-class User(DemoDatabase.TableBase):
-    __table__ = sa.Table('users', DemoDatabase.metadata, autoload=True)
+class User(demo_database.TableBase):
+    __table__ = sa.Table('users', demo_database.metadata, autoload=True)
 ```
 
 **Step two:** create a new GodMode model file in the `models` directory. Let's say, `users.py`. 
@@ -71,12 +68,12 @@ Here's a minimal setup:
 
 ```python
 from godmodel.models.base import BaseAdminModel
-from database.my import MyDatabase, User
+from database.my import demo_database, User
 
 
 # define an admin model with views, actions and widgets
 class UsersAdminModel(BaseAdminModel):
-    db = MyDatabase
+    db = demo_database
     table = User
     name = "users"      # path for URL's
     title = "Users"     # sidebar title
@@ -117,17 +114,17 @@ See a [demo example](database/demo.py) and let's create a new file `database/fir
 from godmode.database import database
 
 # connect to a database using a standard connection string
-FirstDatabase = database("sqlite:///database/first_database.sqlite")
+my_database = database("sqlite:///database/first_database.sqlite")
 
 # refer to some tables you want to use
-class User(FirstDatabase.TableBase):
-    __table__ = sa.Table('users', FirstDatabase.metadata, autoload=True)
+class User(my_database.TableBase):
+    __table__ = sa.Table('users', my_database.metadata, autoload=True)
     # autoload=True will try to load table schema automatically 
     # so you don't need to define each column here by hand (but you can)
 
 
-class Post(FirstDatabase.TableBase):
-    __table__ = sa.Table('posts', FirstDatabase.metadata, autoload=True)
+class Post(my_database.TableBase):
+    __table__ = sa.Table('posts', my_database.metadata, autoload=True)
 
     # with explicit relationships GodMode will be able 
     # create an inteface links for between models
@@ -145,11 +142,11 @@ Let's start with creating a `models/<name_your_model>.py` file.
 
 ```python
 from godmode.models.base import BaseAdminModel
-from database.first_database import FirstDatabase
+from database.first_database import my_database, User
 
 
 class FirstAdminModel(BaseAdminModel):
-    db = FirstDatabase                      # database class
+    db = my_database                        # database class
     table = User                            # table class
     name = "users"                          # name for url path (must be unique)
     # ^ this is actually a minimal setup
@@ -392,9 +389,9 @@ Use carefully. Usually 1 superuser per project is enough.
 ## Plans and TODO
 
 - [x] Buy more beer
-- [ ] Make deletion action instead of view
-- [ ] Get rid of database field in admin models — table is enough
-- [ ] Tests? whahaha
+- [ ] Write tests? whahaha
+- [ ] Make deletion as an action instead of view
+- [ ] Get rid of database field in admin models — table should be enough
 - [ ] Fix HTML/CSS bugs (maybe with a redesign)
 - [ ] Make Widgets Great Again (+sexy appearance)
 - [ ] Support default values from more database drivers
@@ -405,11 +402,12 @@ Use carefully. Usually 1 superuser per project is enough.
 
 ## Similar Projects
 
-Other great projects of automatic admin interfaces:
+Other great automatic admin generators:
 
 * [Django Admin Module (Python)](https://docs.djangoproject.com/en/dev/ref/contrib/admin/)
 * [Flask-Admin (Python)](https://github.com/flask-admin/flask-admin)
 * [Sonata Admin Bundle (PHP)](https://github.com/sonata-project/SonataAdminBundle)
+* [aiohttp_admin](https://github.com/aio-libs/aiohttp_admin)
 
 ## License
 (c) vas3k.com

@@ -6,10 +6,10 @@ import settings
 from godmode.database import database
 
 
-GodModeDatabase = database(settings.APP_DSN)
+godmode_database = database(settings.APP_DSN)
 
 
-class UsersTable(GodModeDatabase.TableBase):
+class UsersTable(godmode_database.TableBase):
     __tablename__ = "gm_users"
 
     id = Column(Integer, primary_key=True)
@@ -20,7 +20,7 @@ class UsersTable(GodModeDatabase.TableBase):
     updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
 
 
-class SessionsTable(GodModeDatabase.TableBase):
+class SessionsTable(godmode_database.TableBase):
     __tablename__ = "gm_sessions"
 
     id = Column(Integer, primary_key=True)
@@ -30,7 +30,7 @@ class SessionsTable(GodModeDatabase.TableBase):
     updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
 
 
-class LogTable(GodModeDatabase.TableBase):
+class LogTable(godmode_database.TableBase):
     __tablename__ = "gm_log"
 
     id = Column(Integer, primary_key=True)

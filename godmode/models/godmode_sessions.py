@@ -4,12 +4,12 @@ from godmode.views.list_view import BaseListView
 from godmode.models.base import BaseAdminModel
 from godmode.acl import ACL
 from godmode.groups.godmode import GodModeGroup
-from godmode.database.godmode import SessionsTable, GodModeDatabase
+from godmode.database.godmode import SessionsTable, godmode_database
 
 
 class GodModeSessionsAdminModel(BaseAdminModel):
     acl = ACL.SUPERUSER
-    db = GodModeDatabase
+    db = godmode_database
     table = SessionsTable
     name = "godmode_sessions"
     title = "User sessions"

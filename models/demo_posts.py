@@ -6,13 +6,13 @@ from godmode.views.list_view import BaseListView
 from godmode.models.base import BaseAdminModel
 from godmode.acl import ACL
 from groups.demo_group import DemoGroup
-from database.demo import Post, DemoDatabase
+from database.demo import Post, demo_database
 from widgets.longtext import LongTextWidget
 
 
 class PostsAdminModel(BaseAdminModel):
     acl = ACL.MODERATOR
-    db = DemoDatabase
+    db = demo_database
     name = "posts"
     title = "Posts"
     icon = "icon-invoice"
