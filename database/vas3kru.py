@@ -1,15 +1,11 @@
 import sqlalchemy as sa
 from sqlalchemy.orm import relationship
 
-from base.db import BaseDatabase
+from godmode.database import database
 from settings import CONNECTION_STRING
 
 
-class Vas3kDatabase(BaseDatabase):
-    dsn = CONNECTION_STRING
-
-
-Vas3kDatabase.bind()
+Vas3kDatabase = database(CONNECTION_STRING)
 
 
 class Clickers(Vas3kDatabase.TableBase):

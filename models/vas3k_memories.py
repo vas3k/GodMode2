@@ -1,6 +1,6 @@
-from base.list_view import BaseListView
-from base.model import BaseAdminModel
-from db.vas3kru import Memory, Vas3kDatabase
+from database.vas3kru import Memory, Vas3kDatabase
+from godmode.models import BaseAdminModel
+from godmode.views.list_view import BaseListView
 from groups.main import Vas3kGroup
 from models.vas3k_stories import ImageWidget
 from widgets.longtext import LongTextWidget

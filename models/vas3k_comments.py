@@ -1,7 +1,7 @@
-from base.list_view import BaseListView
-from base.model import BaseAdminModel
-from base.widget import BaseWidget
-from db.vas3kru import Comment, Vas3kDatabase
+from database.vas3kru import Comment, Vas3kDatabase
+from godmode.models import BaseAdminModel
+from godmode.views.list_view import BaseListView
+from godmode.widgets.base import BaseWidget
 from groups.main import Vas3kGroup
 from widgets.longtext import LongTextWidget
 

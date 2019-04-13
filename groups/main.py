@@ -1,4 +1,4 @@
-from base.group import BaseGroup
+from godmode.groups.base import BaseGroup
 
 
 class Vas3kGroup(BaseGroup):

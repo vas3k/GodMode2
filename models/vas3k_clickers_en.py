@@ -1,4 +1,4 @@
-from db.vas3kru import Vas3kDatabase, ClickersEN
+from database.vas3kru import Vas3kDatabase, ClickersEN
 from groups.main import Vas3kGroup
 from models.vas3k_clickers import ClickersAdminModel
 

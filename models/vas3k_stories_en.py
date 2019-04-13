@@ -1,4 +1,4 @@
-from db.vas3kru import Vas3kDatabase, StoryEN
+from database.vas3kru import Vas3kDatabase, StoryEN
 from groups.main import Vas3kGroup
 from models.vas3k_stories import StoryAdminModel
 

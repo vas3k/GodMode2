@@ -1,5 +1,5 @@
-from base.model import BaseAdminModel
-from db.vas3kru import Vas3kDatabase, Clickers
+from database.vas3kru import Vas3kDatabase, Clickers
+from godmode.models import BaseAdminModel
 from groups.main import Vas3kGroup
 
 

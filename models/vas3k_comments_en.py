@@ -1,4 +1,4 @@
-from db.vas3kru import CommentEN, Vas3kDatabase
+from database.vas3kru import CommentEN, Vas3kDatabase
 from groups.main import Vas3kGroup
 from models.vas3k_comments import CommentAdminModel
 

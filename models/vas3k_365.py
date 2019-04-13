@@ -1,15 +1,12 @@
-from collections import defaultdict
 from datetime import datetime
 
-import re
 import requests
-from flask import render_template, request, Markup
+from flask import render_template, request
 
-from base.model import BaseAdminModel
-from base.view import BaseView
 from common.telebot import post_new_365, post_picture
-from db.vas3kru import Vas3kDatabase, Story, Comment
-
+from database.vas3kru import Vas3kDatabase, Story
+from godmode.models import BaseAdminModel
+from godmode.views.view import BaseView
 
 DEFAULT_ANNOUNCE_TEXT = "В эфире программа «дратути»:"
 
