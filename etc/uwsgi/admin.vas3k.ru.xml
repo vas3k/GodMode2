@@ -1,0 +1,21 @@
+<uwsgi>
+    <plugins>python3,http</plugins>
+    <uid>vas3k</uid>
+    <gid>vas3k</gid>
+    <socket>/home/vas3k/admin.vas3k.ru.sock</socket>
+    <chmod-socket>666</chmod-socket>
+    <chdir>/home/vas3k/admin.vas3k.ru</chdir>
+    <pythonpath>/home/vas3k/admin.vas3k.ru</pythonpath>
+    <module>app</module>
+    <callable>wsgi</callable>
+    <daemonize>/home/vas3k/vas3k.ru/logs/admin-uwsgi.log</daemonize>
+    <harakiri>30</harakiri>
+    <buffer-size>32768</buffer-size>
+    <post-buffering>8192</post-buffering>
+    <post-buffering-bufsize>65536</post-buffering-bufsize>
+    <max-requests>1000</max-requests>
+    <disable-logging/>
+    <listen>100</listen>
+    <master/>
+    <workers>1</workers>
+</uwsgi>
