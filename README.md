@@ -54,26 +54,27 @@ Use `db/demo.py` file as an example.
 
 ```python
 import sqlalchemy as sa
-
-from base.db import BaseDatabase
-
-
-class MyDatabase(BaseDatabase):
-    dsn = "postgresql+psycopg2://username:password@postgres.example.com/dbname"
+from godmode.database import database
 
 
-class User(MyDatabase.TableBase):
-    __table__ = sa.Table("users", MyDatabase.metadata, autoload=True)
-    # you can describe your columns here but autoload=True will do it for you
+# connect to database using a connection string
+DemoDatabase = database("sqlite:///database/demo.sqlite")
+
+
+# refer to a table you want to use
+class User(DemoDatabase.TableBase):
+    __table__ = sa.Table('users', DemoDatabase.metadata, autoload=True)
 ```
 
 **Step two:** create a new GodMode model file in the `models` directory. Let's say, `users.py`. 
 Here's a minimal setup:
 
 ```python
-from base.model import BaseAdminModel
-from db.my import MyDatabase, User
+from godmodel.models.base import BaseAdminModel
+from database.my import MyDatabase, User
 
+
+# define an admin model with views, actions and widgets
 class UsersAdminModel(BaseAdminModel):
     db = MyDatabase
     table = User
@@ -85,20 +86,16 @@ class UsersAdminModel(BaseAdminModel):
 **Step three:** add the database and admin model to the `app.py` file like this:
 
 ```python
-import settings
-from godmode import GodModeApp
-from db.my import MyDatabase
-from models.users import UsersAdminModel
+from godmode.app import create_app
+from models.demo_users import UsersAdminModel
 
-app = GodModeApp(
-    databases=[MyDatabase],
+app = create_app(
     models=[
-        UsersAdminModel,
+        UsersAdminModel,  # explicitly add model to your app
     ]
 )
 
-if settings.DEBUG:
-    app.run()
+# --- xxx ---
 ```
 
 Done. You're beautiful. Now run the app again and open the [localhost:1414](http://localhost:1414) to see your new model.
@@ -119,10 +116,10 @@ See a [demo example](database/demo.py) and let's create a new file `database/fir
 ```python
 from godmode.database import database
 
-# connect to database using standard connection string
+# connect to a database using a standard connection string
 FirstDatabase = database("sqlite:///database/first_database.sqlite")
 
-# refer tables you want to use here
+# refer to some tables you want to use
 class User(FirstDatabase.TableBase):
     __table__ = sa.Table('users', FirstDatabase.metadata, autoload=True)
     # autoload=True will try to load table schema automatically 
