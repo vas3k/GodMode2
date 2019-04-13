@@ -3,7 +3,7 @@ from datetime import datetime
 import requests
 from flask import render_template, request
 
-from database.vas3kru import Vas3kDatabase, Story
+from database.vas3kru import vas3k_database, Story
 from godmode.models import BaseAdminModel
 from godmode.views.view import BaseView
 
@@ -11,7 +11,7 @@ DEFAULT_ANNOUNCE_TEXT = "В эфире программа «дратути»:"
 
 
 class The365AdminModel(BaseAdminModel):
-    db = Vas3kDatabase
+    db = vas3k_database
     table = Story
     name = "365"
     title = "365"

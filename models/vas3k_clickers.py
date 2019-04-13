@@ -1,10 +1,10 @@
-from database.vas3kru import Vas3kDatabase, Clickers
+from database.vas3kru import vas3k_database, Clickers
 from godmode.models import BaseAdminModel
 from groups.main import Vas3kGroup
 
 
 class ClickersAdminModel(BaseAdminModel):
-    db = Vas3kDatabase
+    db = vas3k_database
     table = Clickers
     name = "clickers"
     title = "Кликеры"

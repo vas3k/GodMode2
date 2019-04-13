@@ -1,4 +1,4 @@
-from database.vas3kru import Memory, Vas3kDatabase
+from database.vas3kru import Memory, vas3k_database
 from godmode.models import BaseAdminModel
 from godmode.views.list_view import BaseListView
 from groups.main import Vas3kGroup
@@ -7,7 +7,7 @@ from widgets.longtext import LongTextWidget
 
 
 class MemoryAdminModel(BaseAdminModel):
-    db = Vas3kDatabase
+    db = vas3k_database
     table = Memory
     name = "memories"
     title = "Мемориз"

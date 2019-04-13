@@ -1,10 +1,10 @@
-from database.vas3kru import CommentEN, Vas3kDatabase
+from database.vas3kru import CommentEN, vas3k_database
 from groups.main import Vas3kGroup
 from models.vas3k_comments import CommentAdminModel
 
 
 class CommentENAdminModel(CommentAdminModel):
-    db = Vas3kDatabase
+    db = vas3k_database
     table = CommentEN
     name = "comments_en"
     title = "Комментарии EN"

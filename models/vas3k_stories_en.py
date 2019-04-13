@@ -1,10 +1,10 @@
-from database.vas3kru import Vas3kDatabase, StoryEN
+from database.vas3kru import vas3k_database, StoryEN
 from groups.main import Vas3kGroup
 from models.vas3k_stories import StoryAdminModel
 
 
 class StoryENAdminModel(StoryAdminModel):
-    db = Vas3kDatabase
+    db = vas3k_database
     table = StoryEN
     name = "stories_en"
     title = "Стори EN"

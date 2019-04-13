@@ -1,4 +1,4 @@
-from database.vas3kru import Comment, Vas3kDatabase
+from database.vas3kru import Comment, vas3k_database
 from godmode.models import BaseAdminModel
 from godmode.views.list_view import BaseListView
 from godmode.widgets.base import BaseWidget
@@ -14,7 +14,7 @@ class AvatarWidget(BaseWidget):
 
 
 class CommentAdminModel(BaseAdminModel):
-    db = Vas3kDatabase
+    db = vas3k_database
     table = Comment
     name = "comments"
     title = "Комментарии"

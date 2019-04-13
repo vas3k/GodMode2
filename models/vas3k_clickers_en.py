@@ -1,10 +1,10 @@
-from database.vas3kru import Vas3kDatabase, ClickersEN
+from database.vas3kru import vas3k_database, ClickersEN
 from groups.main import Vas3kGroup
 from models.vas3k_clickers import ClickersAdminModel
 
 
 class ClickersENAdminModel(ClickersAdminModel):
-    db = Vas3kDatabase
+    db = vas3k_database
     table = ClickersEN
     name = "clickers_en"
     title = "Кликеры EN"

@@ -3,12 +3,12 @@ from sqlalchemy.exc import DataError
 from godmode.models.base import BaseAdminModel
 from godmode.views.view import BaseView
 from godmode.acl import ACL
-from database.vas3kru import Vas3kDatabase
+from database.vas3kru import vas3k_database
 
 
 class IndexAdminModel(BaseAdminModel):
     acl = ACL.ALL
-    db = Vas3kDatabase
+    db = vas3k_database
     title = "Home"
     place = None
     url_prefix = "/"

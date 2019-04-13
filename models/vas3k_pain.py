@@ -1,4 +1,4 @@
-from database.vas3kru import Pain, Vas3kDatabase
+from database.vas3kru import Pain, vas3k_database
 from godmode.models import BaseAdminModel
 from godmode.views.list_view import BaseListView
 from groups.main import Vas3kGroup
@@ -6,7 +6,7 @@ from widgets.longtext import LongTextWidget
 
 
 class PainAdminModel(BaseAdminModel):
-    db = Vas3kDatabase
+    db = vas3k_database
     table = Pain
     name = "pain"
     title = "Расскажи где болит"

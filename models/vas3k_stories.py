@@ -1,4 +1,4 @@
-from database.vas3kru import Story, Vas3kDatabase
+from database.vas3kru import Story, vas3k_database
 from godmode.models import BaseAdminModel
 from godmode.views.edit_view import BaseEditView
 from godmode.views.list_view import BaseListView
@@ -31,7 +31,7 @@ class ImageWidget(BaseWidget):
 
 
 class StoryAdminModel(BaseAdminModel):
-    db = Vas3kDatabase
+    db = vas3k_database
     table = Story
     name = "stories"
     title = "Стори"
