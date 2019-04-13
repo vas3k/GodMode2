@@ -3,7 +3,6 @@ from datetime import datetime
 import requests
 from flask import render_template, request
 
-from common.telebot import post_new_365, post_picture
 from database.vas3kru import Vas3kDatabase, Story
 from godmode.models import BaseAdminModel
 from godmode.views.view import BaseView
@@ -52,7 +51,7 @@ class The365AdminModel(BaseAdminModel):
             if not title:
                 title = today_date
 
-            new_story = self.model.create(
+            self.model.create(
                 slug=today_date,
                 type="365",
                 title=title,
@@ -67,11 +66,6 @@ class The365AdminModel(BaseAdminModel):
                 is_featured=False,
                 is_sexy_title=False
             )
-
-            if post_to_channel or post_to_chat:
-                telegram_text = "{}\nhttp://vas3k.ru/365/{}/\n".format(telegram_text, new_story.slug)
-                post_picture(image=open(saved_filename, "rb"), to_chat=post_to_chat, to_channel=post_to_channel)
-                post_new_365(text=telegram_text, to_chat=post_to_chat, to_channel=post_to_channel)
 
             return render_template("success.html", message="Saved: <a href='http://vas3k.ru/365/{today}/'>http://vas3k.ru/365/{today}/</a>".format(today=today_date))
 

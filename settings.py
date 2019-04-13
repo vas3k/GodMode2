@@ -36,9 +36,6 @@ LOGGING = {
 }
 
 CONNECTION_STRING = ""
-TELEGRAM_TOKEN = ""
-TELEGRAM_CHAT_ID = ""
-TELEGRAM_CHANNEL_ID = ""
 
 try:
     from local_settings import *
