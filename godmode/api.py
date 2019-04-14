@@ -1,3 +1,4 @@
+# pylint: disable=redefined-builtin
 import hashlib
 import json
 import re
@@ -23,11 +24,8 @@ class API:
     @staticmethod
     def get(request, key, required):
         val = request.args.get(key) or request.form.get(key) or request.cookies.get(key)
-        if val is None:
-            if required:
-                raise BadParams(key)
-            else:
-                return None
+        if val is None and required:
+            raise BadParams(key)
         return val
 
     @staticmethod
@@ -57,7 +55,7 @@ class API:
         val = val.strip()
 
         if forced:
-            if None != variants and len(variants) and not val in variants:
+            if variants and len(variants) and not val in variants:
                 val = variants[0]
 
             if len(val) > max:
@@ -111,10 +109,11 @@ class API:
 
         if val in [b"0", b"false", b"False"]:
             return False
-        elif val in [b"1", b"true", b"True"]:
+
+        if val in [b"1", b"true", b"True"]:
             return True
-        else:
-            raise BadParams(key)
+
+        raise BadParams(key)
 
     @staticmethod
     def get_int(request, key, required=True, variants=None, min=None, max=None,

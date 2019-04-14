@@ -78,4 +78,4 @@ class BaseAction(View):
         return render_template("actions/button_action.html", url=self.name, button_label="Submit")
 
     def do_item_action(self, *args, **kwargs):
-        raise NotImplemented()
+        raise NotImplementedError()

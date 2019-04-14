@@ -14,12 +14,11 @@ class DatetimeWidget(BaseWidget):
         try:
             if isinstance(value, (date, datetime)):
                 return value.strftime("%d.%m.%Y %H:%M")
-            elif isinstance(value, str):
-                if value.isnumeric():
-                    value = datetime.utcfromtimestamp(int(value)).strftime("%d.%m.%Y %H:%M")
-                else:
-                    return value
-            else:
-                return value
-        except:
-            return value
+
+            if isinstance(value, str) and value.isnumeric():
+                return datetime.utcfromtimestamp(int(value)).strftime("%d.%m.%Y %H:%M")
+
+        except ValueError:
+            pass
+
+        return value

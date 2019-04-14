@@ -86,7 +86,7 @@ class BaseListView(BaseView):
         except exc.SQLAlchemyError as error:
             message = error.orig if hasattr(error, "orig") else str(error)
             return render_template("error.html", message="Error: {}".format(message), filter_error=True)
-        
+
         return self.render(
             rows=raw_rows,
             filters=filters,

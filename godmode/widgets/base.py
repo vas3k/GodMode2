@@ -2,10 +2,10 @@ import copy
 
 import jinja2
 import wtforms
-from flask import render_template
-from sqlalchemy.sql.elements import TextClause
 from wtforms.fields.core import UnboundField
 from wtforms.validators import Optional, InputRequired
+from flask import render_template
+from sqlalchemy.sql.elements import TextClause
 
 
 class BaseWidget:

@@ -19,10 +19,8 @@ class ACL:
         if user is None:
             return False
 
-        if cls.PRIORITY.index(user.acl) <= cls.PRIORITY.index(module.acl):
-            has_access = True
-        else:
-            has_access = False
+        has_access = cls.PRIORITY.index(user.acl) <= cls.PRIORITY.index(module.acl)
+
         return has_access
 
     @classmethod

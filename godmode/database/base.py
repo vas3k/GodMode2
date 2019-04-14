@@ -24,4 +24,3 @@ class BaseDatabase:
         self.metadata = self.TableBase.metadata
         self.session = sessionmaker(bind=self.engine)()
         self.hash = hashlib.sha256(self.dsn.encode()).hexdigest()
-
