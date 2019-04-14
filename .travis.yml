@@ -1,0 +1,10 @@
+language: python
+env:
+  - DEBUG=true
+python:
+  - "3.6"
+install:
+  - pip install -r requirements.txt
+script:
+  - git ls-files "*.py" | xargs pylint
+  - python app.py

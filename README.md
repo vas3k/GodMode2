@@ -1,5 +1,11 @@
 # GodMode 2
 
+[![Build Status](https://travis-ci.org/vas3k/GodMode2.svg?branch=public)](https://travis-ci.org/vas3k/GodMode2)
+![Python 3.x](https://img.shields.io/badge/Python-3.4%20%7C%203.5%20%7C%203.6%20%7C%203.7-informational.svg) 
+[![Known Vulnerabilities](https://snyk.io/test/github/vas3k/GodMode2/badge.svg?targetFile=requirements.txt)](https://snyk.io/test/github/vas3k/GodMode2?targetFile=requirements.txt)
+[![codebeat badge](https://codebeat.co/badges/951460ba-e540-45b9-866f-044a9516f465)](https://codebeat.co/projects/github-com-vas3k-godmode-master)
+
+
 GodMode is a customizable semi-automatic admin site generator for any SQL databases and lazy coders like me. 
 
 Inspired by [Django Admin site](https://docs.djangoproject.com/en/dev/ref/contrib/admin/) 
