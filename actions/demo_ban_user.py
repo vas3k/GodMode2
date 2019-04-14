@@ -13,6 +13,6 @@ class DemoBanUserAction(BaseAction):
     methods = ["GET", "POST"]
 
     def do_item_action(self, *args, **kwargs):
-        id = kwargs.pop("id")
-        self.model.update(id=id, is_locked=True)
+        user_id = kwargs.pop("id")
+        self.model.update(id=user_id, is_locked=True)
         return render_template("success.html", message="User {} was banned".format(id))

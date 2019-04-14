@@ -1,3 +1,5 @@
+import os
+
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 import settings
@@ -21,7 +23,7 @@ app = create_app(
 
 wsgi = ProxyFix(app.wsgi_app)
 
-if __name__ == '__main__':
+if __name__ == '__main__' and not os.environ.get("TRAVIS"):
     log.info("GodMode is starting...")
     app.run(
         debug=settings.DEBUG,

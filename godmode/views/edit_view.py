@@ -11,13 +11,13 @@ class BaseEditView(BaseView):
     template = "edit.html"
     acl = ACL.ADMIN
 
-    def get(self, id):
-        item = self.model.get(id=id)
+    def get(self, item_id):
+        item = self.model.get(id=item_id)
         if not item:
             return render_template("error.html", message="'{}' does not exist.".format(self.model.name))
         return self.render(item=item, form=self.form(obj=item))
 
-    def post(self, id):
+    def post(self, item_id):
         form = self.form(request.form)
 
         if not form.validate():
@@ -36,7 +36,7 @@ class BaseEditView(BaseView):
                 updates[field.name] = data
 
         if "id" not in updates:
-            updates["id"] = id
+            updates["id"] = item_id
 
         try:
             self.model.update(**updates)

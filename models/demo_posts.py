@@ -45,8 +45,8 @@ class PostsAdminModel(BaseAdminModel):
         template = "views/post_details.html"
         acl = ACL.MODERATOR
 
-        def get(self, id):
-            post = self.model.get(id=id)
+        def get(self, item_id):
+            post = self.model.get(id=item_id)
             if not post:
                 return render_template("error.html", message="Looks like this post does not exist.")
             author = post.user  # just for example

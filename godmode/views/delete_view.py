@@ -9,6 +9,6 @@ class BaseDeleteView(BaseView):
     name = "delete"
     acl = ACL.ADMIN
 
-    def get(self, id):
-        self.model.delete(id=id)
+    def get(self, item_id):
+        self.model.delete(id=item_id)
         return redirect("{}{}".format(self.model.url_prefix, self.model.name))

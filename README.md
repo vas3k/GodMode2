@@ -396,6 +396,7 @@ Use carefully. Usually 1 superuser per project is enough.
 
 - [x] Buy more beer
 - [ ] Write tests? whahaha
+- [ ] Remove all hard-coded 'id' fields, always extract PK from table. GodMode today can't work with tables without an 'id' field.
 - [ ] Make deletion as an action instead of view
 - [ ] Get rid of database field in admin models — table should be enough
 - [ ] Fix HTML/CSS bugs (maybe with a redesign)

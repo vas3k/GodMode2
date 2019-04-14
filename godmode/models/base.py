@@ -43,10 +43,10 @@ class BaseAdminModel:
 
     views = {
         "list_view": "/",
-        "edit_view": "/<id>/edit/",
+        "edit_view": "/<item_id>/edit/",
         "create_view": "/create/",
-        "details_view": "/<id>/details/",
-        "delete_view": "/<id>/delete/"
+        "details_view": "/<item_id>/details/",
+        "delete_view": "/<item_id>/delete/"
     }
 
     list_view = BaseListView
@@ -148,7 +148,7 @@ class BaseAdminModel:
         self.session.commit()
 
     def create(self, **kwargs):
-        item = self.table(**kwargs)
+        item = self.table(**kwargs)  # pylint: disable=not-callable
         self.before_create(item)
         self.session.add(item)
         self.session.commit()
@@ -162,7 +162,8 @@ class BaseAdminModel:
 
         return item
 
-    def update(self, id, **kwargs):
+    def update(self, id, **kwargs):  # pylint: disable=redefined-builtin
+        # FIXME: don't hardcode 'id' here — make it more generalistic, extract PK from table
         old_item = self.session.query(self.table).filter_by(id=id).first()
         old_item = copy.deepcopy(old_item)
         self.before_update(old_item)

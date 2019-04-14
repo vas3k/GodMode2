@@ -17,8 +17,8 @@ class BaseDetailsView(BaseView):
     actions = []
     acl = ACL.ADMIN
 
-    def get(self, id):
-        item = self.model.get(id=id)
+    def get(self, item_id):
+        item = self.model.get(id=item_id)
         if not item:
             return render_template("error.html", message="'{}' does not exist.".format(self.model.name))
         return self.render(item=item)
