@@ -13,6 +13,7 @@ from models.vas3k_comments import CommentAdminModel
 from models.vas3k_comments_en import CommentENAdminModel
 from models.vas3k_memories import MemoryAdminModel
 from models.vas3k_pain import PainAdminModel
+from models.vas3k_pain_answers import PainAnswerAdminModel
 from models.vas3k_stories import StoryAdminModel
 from models.vas3k_stories_en import StoryENAdminModel
 
@@ -29,7 +30,8 @@ app = create_app(
         StoryENAdminModel,
         CommentENAdminModel,
         ClickersENAdminModel,
-        PainAdminModel
+        PainAdminModel,
+        PainAnswerAdminModel
     ]
 )
 

@@ -5,7 +5,7 @@ from groups.main import Vas3kGroup
 from widgets.longtext import LongTextWidget
 
 
-class PainAdminModel(BaseAdminModel):
+class PainAnswerAdminModel(BaseAdminModel):
     db = vas3k_database
     table = PainAnswer
     name = "pain_answers"
