@@ -6,7 +6,7 @@ import settings
 from godmode.database import database
 
 
-godmode_database = database(settings.APP_DSN)
+godmode_database = database(settings.APP_DSN, connect_args={"check_same_thread": False})
 
 
 class UsersTable(godmode_database.TableBase):

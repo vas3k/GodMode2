@@ -57,9 +57,6 @@ class BaseListView(BaseView):
 
     def get(self):
         filters = API.get_str(request, "filters", required=False)
-        if filters:
-            filters = text(filters)
-
         order_by = API.get_str(request, "order_by", required=False)
         if order_by:
             order_by = text(order_by)
