@@ -57,11 +57,11 @@ class StoryAdminModel(BaseAdminModel):
     class StoryEditView(BaseEditView):
         fields = [
             "type", "slug", "author", "title", "subtitle",
-            "image", "text", "html",
+            "image", "color", "text",
             "preview_image", "preview_text",
             "book_image", "book_text",
             "data", "created_at", "comments_count", "views_count",
-            "is_visible", "is_commentable", "is_featured"
+            "is_visible", "is_commentable", "is_featured", "is_members_only"
         ]
 
     edit_view = StoryEditView

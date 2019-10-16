@@ -23,6 +23,10 @@ class Comment(vas3k_database.TableBase):
     story = relationship('Story')
 
 
+class User(vas3k_database.TableBase):
+    __table__ = sa.Table('users', vas3k_database.metadata, autoload=True)
+
+
 class CommentEN(vas3k_database.TableBase):
     __table__ = sa.Table('comments_en', vas3k_database.metadata, autoload=True)
     story = relationship('StoryEN')
