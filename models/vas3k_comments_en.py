@@ -13,7 +13,7 @@ class AvatarWidget(BaseWidget):
         return """<div style="display: inline-block; width: 40px; height: 40px; background-repeat: no-repeat; background-size: cover; border-radius: 50%%; background-image: url('http://vas3k.ru/static/images/avatars/%s');"></div>""" % item.avatar
 
 
-class CommentENAdminModel(CommentAdminModel):
+class CommentENAdminModel(BaseAdminModel):
     db = vas3k_database
     table = CommentEN
     name = "comments_en"

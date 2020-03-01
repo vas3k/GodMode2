@@ -30,7 +30,7 @@ class ImageWidget(BaseWidget):
         return template
 
 
-class StoryENAdminModel(StoryAdminModel):
+class StoryENAdminModel(BaseAdminModel):
     db = vas3k_database
     table = StoryEN
     name = "stories_en"
