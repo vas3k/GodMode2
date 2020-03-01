@@ -1,6 +1,9 @@
 from database.vas3kru import CommentEN, vas3k_database
+from godmode.models import BaseAdminModel
+from godmode.views.list_view import BaseListView
+from godmode.widgets.base import BaseWidget
 from groups.main import Vas3kGroup
-from models.vas3k_comments import CommentAdminModel
+from widgets.longtext import LongTextWidget
 
 
 class AvatarWidget(BaseWidget):

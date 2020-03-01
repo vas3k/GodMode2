@@ -1,6 +1,10 @@
-from database.vas3kru import vas3k_database, StoryEN
+from database.vas3kru import StoryEN, vas3k_database
+from godmode.models import BaseAdminModel
+from godmode.views.edit_view import BaseEditView
+from godmode.views.list_view import BaseListView
+from godmode.widgets.base import BaseWidget
 from groups.main import Vas3kGroup
-from models.vas3k_stories import StoryAdminModel
+from widgets.longtext import LongTextWidget
 
 
 class TitleWidget(BaseWidget):
