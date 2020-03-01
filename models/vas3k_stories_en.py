@@ -12,11 +12,39 @@ class StoryENAdminModel(StoryAdminModel):
     group = Vas3kGroup
     index = 1000
     ordering = StoryEN.created_at.desc()
+    widgets = {
+        "image": ImageWidget,
+        "title": TitleWidget,
+        "text": LongTextWidget,
+        "html": LongTextWidget
+    }
+
+    class StoryListView(BaseListView):
+        fields = [
+            "id", "title", "image", "type", "created_at",
+            "comments_count", "views_count", "is_visible", "is_commentable"
+        ]
+
+    list_view = StoryListView
+
+    class StoryEditView(BaseEditView):
+        fields = [
+            "type", "slug", "author", "title", "subtitle",
+            "image", "text",
+            "preview_image", "preview_text",
+            "book_image", "book_text",
+            "data", "created_at", "comments_count", "views_count",
+            "is_visible", "is_commentable", "is_featured"
+        ]
+
+    edit_view = StoryEditView
+
+    details_view = None
 
     def after_update(self, old_item, new_item):
         if old_item.text != new_item.text:
             self.session.execute(
-                "update stories_en set text_cache = '', text_cache_rss = '' where id = :story_id",
+                "update stories set text_cache = '', text_cache_rss = '' where id = :story_id",
                 {"story_id": new_item.id}
             )
             self.session.commit()

@@ -12,3 +12,16 @@ class CommentENAdminModel(CommentAdminModel):
     group = Vas3kGroup
     index = 800
     ordering = CommentEN.created_at.desc()
+    widgets = {
+        "avatar": AvatarWidget,
+        "text": LongTextWidget
+    }
+
+    class CommentListView(BaseListView):
+        fields = [
+            "id", "avatar", "author", "text", "ip", "rating", "is_visible"
+        ]
+
+    list_view = CommentListView
+
+    details_view = None
