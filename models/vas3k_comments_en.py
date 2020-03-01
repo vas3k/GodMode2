@@ -3,6 +3,13 @@ from groups.main import Vas3kGroup
 from models.vas3k_comments import CommentAdminModel
 
 
+class AvatarWidget(BaseWidget):
+    filterable = False
+
+    def render_list(self, item):
+        return """<div style="display: inline-block; width: 40px; height: 40px; background-repeat: no-repeat; background-size: cover; border-radius: 50%%; background-image: url('http://vas3k.ru/static/images/avatars/%s');"></div>""" % item.avatar
+
+
 class CommentENAdminModel(CommentAdminModel):
     db = vas3k_database
     table = CommentEN

@@ -3,6 +3,29 @@ from groups.main import Vas3kGroup
 from models.vas3k_stories import StoryAdminModel
 
 
+class TitleWidget(BaseWidget):
+    filterable = False
+
+    def render_list(self, item):
+        template = """<a href='http://vas3k.com/{item.type}/{item.slug}/?preview=true' target='_blank' style='color: #000; font-size: 18px; font-weight: 500;'>{item.title}</a><br><span>{item.subtitle}</span>""".format(item=item)
+        return template
+
+
+class ImageWidget(BaseWidget):
+    filterable = False
+
+    def render_list(self, item):
+        if item.image:
+            if item.image.startswith("/"):
+                image = "http://vas3k.com{}".format(item.image)
+            else:
+                image = item.image
+            template = "<img src='{}' style='width: 300px;'>".format(image)
+        else:
+            template = ""
+        return template
+
+
 class StoryENAdminModel(StoryAdminModel):
     db = vas3k_database
     table = StoryEN
