@@ -8,7 +8,7 @@
     <pythonpath>/home/vas3k/admin.vas3k.ru</pythonpath>
     <module>app</module>
     <callable>wsgi</callable>
-    <daemonize>/home/vas3k/vas3k.ru/logs/admin-uwsgi.log</daemonize>
+    <daemonize>/dev/null</daemonize>
     <harakiri>30</harakiri>
     <buffer-size>32768</buffer-size>
     <post-buffering>8192</post-buffering>
