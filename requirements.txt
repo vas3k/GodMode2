@@ -3,7 +3,7 @@ Flask-Assets==0.12
 Flask-SQLAlchemy>=2.3.2
 SQLAlchemy>=1.1.0
 py-bcrypt==0.4
-Jinja2==2.10.1
+Jinja2==2.11.3
 WTForms==2.2.1
-werkzeug==0.15.2
+werkzeug==0.15.3
 pylint==2.3.1
