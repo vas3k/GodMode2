@@ -43,7 +43,8 @@ class StoryAdminModel(BaseAdminModel):
         "image": ImageWidget,
         "title": TitleWidget,
         "text": LongTextWidget,
-        "html": LongTextWidget
+        "html": LongTextWidget,
+        "preview_text": LongTextWidget,
     }
 
     class StoryListView(BaseListView):

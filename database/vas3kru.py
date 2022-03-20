@@ -45,9 +45,5 @@ class StoryEN(vas3k_database.TableBase):
     __table__ = sa.Table('stories_en', vas3k_database.metadata, autoload=True)
 
 
-class Pain(vas3k_database.TableBase):
-    __table__ = sa.Table('pain', vas3k_database.metadata, autoload=True)
-
-
-class PainAnswer(vas3k_database.TableBase):
-    __table__ = sa.Table('pain_answers', vas3k_database.metadata, autoload=True)
+class Subscriber(vas3k_database.TableBase):
+    __table__ = sa.Table('subscribers', vas3k_database.metadata, autoload=True)
