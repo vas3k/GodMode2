@@ -5,5 +5,5 @@ SQLAlchemy>=1.1.0
 py-bcrypt==0.4
 Jinja2==2.10.1
 WTForms==3.0.0a1
-werkzeug==0.15.2
+werkzeug==2.2.3
 pylint==2.3.1
